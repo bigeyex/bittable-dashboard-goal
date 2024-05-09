@@ -1,0 +1,29 @@
+{
+    "name": "bittable-dashboard-goal",
+    "version": "1.0.0",
+    "type": "module",
+    "description": "Goal widget for bittable dashboard",
+    "scripts": {
+        "dev": "vite",
+        "start": "vite",
+        "build": "vite build",
+        "preview": "vite preview"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "@types/react": "^18.0.15",
+        "@types/react-dom": "^18.0.6",
+        "@vitejs/plugin-react": "^2.0.0",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "typescript": "^4.7.4",
+        "vite": "^3.0.4"
+    },
+    "dependencies": {
+        "@douyinfe/semi-ui": "^2.57.0",
+        "@lark-base-open/js-sdk": "https://lf3-static.bytednsdoc.com/obj/eden-cn/jjjpceh7nulojvhj/@lark-base-open-js-sdk-0.4.0-alpha.5.tgz",
+        "normalize.css": "^8.0.1"
+    }
+}
