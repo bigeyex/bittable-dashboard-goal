@@ -1,0 +1,82 @@
+.configForm.semi-form {
+    width: 100%;
+
+    .semi-form-field-label-text {
+        font-weight: bold;
+    }
+
+    .semi-select {
+        width: 100%;
+    }
+
+    .semi-form-field {
+        padding: 10px 0;
+    }
+
+    .colorPicker {
+        display: flex;
+        background-color: rgb(245,246,247);
+        border: none;
+        gap: 8px;
+        height: 32px;
+        align-items: center;
+        padding-left: 20px;
+
+        .semi-radio {
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            padding: 0;
+        }
+    }
+
+    .currentValueLabelGroup {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .currentValueAggMethod {
+        align-self: flex-end;
+    }
+
+    .fieldUnit {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+
+        .unitSymbol {
+            flex: 1;
+        }
+
+        .unitPosition {
+            height: 30px;
+        }
+    }
+
+    .fieldNumericFormat {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+    }
+}
+
+.semi-form {
+    .semi-radioGroup {
+        border: 1px solid #D0D3D6;
+        height: 32px;
+    }
+
+}
+
+/* fix broken semi dsm */
+.semi-input-group .semi-select:first-child,
+.semi-input-group .semi-select:last-child,
+.semi-input-group>.semi-input-wrapper:first-child {
+    border-radius: 4px;
+}
+
+.semi-input-group>.semi-input-wrapper:not(:last-child)::after,
+.semi-input-group .semi-select:not(:last-child)::after {
+    display: none;
+}
