@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { FieldType, IDataRange, IField, ITable, SourceType, base } from '@lark-base-open/js-sdk';
-import { Form, Button, Divider, Select, useFieldApi } from '@douyinfe/semi-ui';
+import { Form, Button, Divider, Select, useFieldApi, useFormApi } from '@douyinfe/semi-ui';
 import { TriggerRenderProps } from '@douyinfe/semi-ui/lib/es/select';
 import { IconChevronDown } from '@douyinfe/semi-icons';
 import { DashboardState, bitable, dashboard } from "@lark-base-open/js-sdk";
 import '@semi-bot/semi-theme-feishu-bittable-dashboard/semi.min.css'
 import './style.scss'
+import { ConfigPayload } from '../../store/config';
 
 export default () => {
     type TableInfo = {tableId: string, tableName: string}
@@ -16,6 +17,7 @@ export default () => {
     
     const emptyDefaultValueSetter = (value: string) => {}
     let setDefaultValues = {
+        form: (values:ConfigPayload) => {},
         dataSource: emptyDefaultValueSetter,
         dataRange: emptyDefaultValueSetter,
         currentValueAggField: emptyDefaultValueSetter
@@ -73,13 +75,15 @@ export default () => {
         const dataRangeFieldApi = useFieldApi('dataRange')
         const dataSourceFieldApi = useFieldApi('dataSource')
         const currentValueAggFieldApi = useFieldApi('currentValueAggField')
+        const formApi = useFormApi()
+        setDefaultValues.form = (values ) => { formApi.setValues(values) }
         setDefaultValues.dataSource = (value: string) => { dataSourceFieldApi.setValue(value) }
         setDefaultValues.dataRange = (value: string) => { dataRangeFieldApi.setValue(value) }
         setDefaultValues.currentValueAggField = (value: string) => { currentValueAggFieldApi.setValue(value) }
         return '';
     }
 
-    return <Form labelPosition='top' className='configForm'>
+    return <Form labelPosition='top' className='configForm' onChange={(state) => console.log('form', state)}>
 
         <Form.Select field="dataSource" label="数据源" placeholder="请选择数据源" 
             onChange={value => {onDataSourceChange(value as string)}}
@@ -122,15 +126,18 @@ export default () => {
         <Form.Input field="targetValue" label="目标值" initValue={100}></Form.Input>
 
         <Form.InputGroup label={{ text: "当前值" }} className='currentValueLabelGroup'>
-            <Form.Select field="currentValueField">
-                <Select.Option>统计字段总数</Select.Option>
-                <Select.Option>统计字段数值</Select.Option>
+            <Form.Select field="currentValueField" initValue="count">
+                <Select.Option value="count">统计字段总数</Select.Option>
+                <Select.Option value="calc">统计字段数值</Select.Option>
             </Form.Select>
-            <Form.Select field="currentValueAggMethod" className='currentValueAggMethod' triggerRender={triggerRenderBorderless}>
-                <Select.Option>求和</Select.Option>
-                <Select.Option>平均值</Select.Option>
+            <Form.Select field="currentValueAggMethod" className='currentValueAggMethod' 
+                    initValue="sum" triggerRender={triggerRenderBorderless}>
+                <Select.Option value="sum">求和</Select.Option>
+                <Select.Option value="avg">平均值</Select.Option>
+                <Select.Option value="max">最大值</Select.Option>
+                <Select.Option value="min">最小值</Select.Option>
             </Form.Select>
-            <Form.Select field="currentValueAggField" 
+            <Form.Select field="currentValueAggField" initValue=""
                     optionList={ numberFieldList.map(fieldInfo => ({value: fieldInfo.fieldId, label: fieldInfo.fieldName}) )}>
             </Form.Select>
         </Form.InputGroup>
@@ -144,12 +151,12 @@ export default () => {
         </Form.InputGroup>
 
         <Form.InputGroup label={{ text: "格式" }} className='fieldNumericFormat'>
-            <Form.Select field="numericFormat">
-                <Select.Option>整数</Select.Option>
-                <Select.Option>保留1位小数</Select.Option>
-                <Select.Option>保留2位小数</Select.Option>
+            <Form.Select field="numericDigits" initValue={0}>
+                <Select.Option value={0}>整数</Select.Option>
+                <Select.Option value={1}>保留1位小数</Select.Option>
+                <Select.Option value={2}>保留2位小数</Select.Option>
             </Form.Select>
-            <Form.Checkbox field="numericAbbrKilos" >千位缩写</Form.Checkbox>
+            <Form.Checkbox field="numericAbbrKilos" initValue={false}>千位缩写</Form.Checkbox>
 
         </Form.InputGroup>
 
