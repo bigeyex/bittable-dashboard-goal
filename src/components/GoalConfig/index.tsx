@@ -6,13 +6,15 @@ import { IconChevronDown } from '@douyinfe/semi-icons';
 import { DashboardState, bitable, dashboard } from "@lark-base-open/js-sdk";
 import '@semi-bot/semi-theme-feishu-bittable-dashboard/semi.min.css'
 import './style.scss'
-import { ConfigPayload } from '../../store/config';
+import { ConfigPayload, ConfigState, loadConfig, saveConfig, updatePreviewData } from '../../store/config';
+import { useAppDispatch, useAppSelector } from '../../store/hook';
 
 export default () => {
     type TableInfo = {tableId: string, tableName: string}
     const [tableList, setTableList] = useState<TableInfo[]>([])
     const [tableDataRange, setTableDataRange] = useState<IDataRange[]>([])
     type NumberFieldInfo = {fieldId: string, fieldName: string}
+    const dispatch = useAppDispatch()
     const [numberFieldList, setNumberFieldList] = useState<NumberFieldInfo[]>([])
     
     const emptyDefaultValueSetter = (value: string) => {}
@@ -40,12 +42,18 @@ export default () => {
 
     const fetchInitData = async() => {
         const tableListData = await getTableList();
+        const configState = await dispatch<Promise<ConfigPayload>>(loadConfig())
         setTableList(tableListData);
         if (tableListData.length > 0) {
             const dataRange = await getTableRange(tableListData[0].tableId)
             setTableDataRange(dataRange)
-            setDefaultValues.dataSource(tableListData[0].tableId)
-            setDefaultValues.dataRange(JSON.stringify(dataRange[0]))
+            if (configState.dataSource != '') {
+                setDefaultValues.form(configState)
+            }
+            else {
+                setDefaultValues.dataSource(tableListData[0].tableId)
+                setDefaultValues.dataRange(JSON.stringify(dataRange[0]))
+            }
         }
     }
     useEffect(() => {
@@ -83,7 +91,9 @@ export default () => {
         return '';
     }
 
-    return <Form labelPosition='top' className='configForm' onChange={(state) => console.log('form', state)}>
+    return <Form labelPosition='top' className='configForm' 
+                onChange={(formData) => dispatch(updatePreviewData(formData.values as ConfigPayload))}
+                onSubmit={(formData) => dispatch(saveConfig(formData as ConfigPayload))}>
 
         <Form.Select field="dataSource" label="数据源" placeholder="请选择数据源" 
             onChange={value => {onDataSourceChange(value as string)}}
@@ -126,16 +136,16 @@ export default () => {
         <Form.Input field="targetValue" label="目标值" initValue={100}></Form.Input>
 
         <Form.InputGroup label={{ text: "当前值" }} className='currentValueLabelGroup'>
-            <Form.Select field="currentValueField" initValue="count">
+            <Form.Select field="currentValueCalcMethod" initValue="count">
                 <Select.Option value="count">统计字段总数</Select.Option>
                 <Select.Option value="calc">统计字段数值</Select.Option>
             </Form.Select>
             <Form.Select field="currentValueAggMethod" className='currentValueAggMethod' 
-                    initValue="sum" triggerRender={triggerRenderBorderless}>
-                <Select.Option value="sum">求和</Select.Option>
-                <Select.Option value="avg">平均值</Select.Option>
-                <Select.Option value="max">最大值</Select.Option>
-                <Select.Option value="min">最小值</Select.Option>
+                    initValue="SUM" triggerRender={triggerRenderBorderless}>
+                <Select.Option value="SUM">求和</Select.Option>
+                <Select.Option value="AVERAGE">平均值</Select.Option>
+                <Select.Option value="MAX">最大值</Select.Option>
+                <Select.Option value="MIN">最小值</Select.Option>
             </Form.Select>
             <Form.Select field="currentValueAggField" initValue=""
                     optionList={ numberFieldList.map(fieldInfo => ({value: fieldInfo.fieldId, label: fieldInfo.fieldName}) )}>

@@ -26,7 +26,6 @@ html, #root, body {
     overflow: auto;
     /* justify-content:flex-start; */
     border-left: 1px solid #dee0e3;
-    height: 100%;
     padding: 10px 20px 35px 20px;
     /* width: 350px; */
   }

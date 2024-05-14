@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import configReducer from './config'
+import chartDataReducer from './chartData'
 
 export const store = configureStore({
   reducer: {
-    config: configReducer
+    config: configReducer,
+    chartData: chartDataReducer
   }
 })
 
