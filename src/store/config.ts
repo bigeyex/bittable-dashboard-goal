@@ -19,10 +19,15 @@ export interface ConfigState {
     unitSign: string
 }
 
+export interface ConfigSliceState {
+  config: ConfigState
+}
+
 export type ConfigPayload = Partial<ConfigState>
 
 // Define the initial state using that type
-const initialState: ConfigState = {
+const initialState: ConfigSliceState = {
+  config: {
     color: "green",
     currentValueAggMethod: "sum",
     currentValueCalcMethod: "count",
@@ -34,6 +39,7 @@ const initialState: ConfigState = {
     targetValue: '100',
     unitPosition: "left",
     unitSign: "$",
+  }
 }
 
 export const configSlice = createSlice({
@@ -42,7 +48,7 @@ export const configSlice = createSlice({
   initialState,
   reducers: {
     setConfigState: (state, action:PayloadAction<ConfigPayload>) => {
-        state = {...state, ...action.payload}
+        state.config = {...state.config, ...action.payload}
     },
   }
 })
@@ -61,14 +67,14 @@ function dashboardDataConditionFromConfigState(state:ConfigState):IDataCondition
 }
 
 export const updatePreviewData = (payload:ConfigPayload):AppThunk => (async (dispatch, getState) => {
-  const dashboardDataCondition = dashboardDataConditionFromConfigState({...getState().config, ...payload})
+  const dashboardDataCondition = dashboardDataConditionFromConfigState({...getState().config.config, ...payload})
   const previewData = await dashboard.getPreviewData(dashboardDataCondition)
   dispatch(setCurrentValueFromIData(previewData))
 })
 
 // 保存图表配置到多维表格，在确认配置时调用
 export const saveConfig = (payload:ConfigPayload):AppThunk => (async (dispatch, getState) => {
-  const configState = {...getState().config, ...payload}
+  const configState = {...getState().config.config, ...payload}
   const dashboardDataCondition = dashboardDataConditionFromConfigState(configState)
   dashboard.saveConfig({
     dataConditions: [dashboardDataCondition],
@@ -86,7 +92,7 @@ export const loadConfig = ():AppThunk<Promise<ConfigPayload>> => (async (dispatc
     dispatch(setConfigState(configState))
     return configState
   }
-  return initialState
+  return initialState.config
 })
 
 export default configSlice.reducer

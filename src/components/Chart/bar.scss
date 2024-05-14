@@ -1,0 +1,53 @@
+/* 1 px = 0.5 vmin */
+.goalchartBarContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+.goalchartBar {
+    width: 150vmin;
+    display: flex;
+    flex-direction: column;
+    gap: 10vmin;
+    
+    .textRegion {
+        display: flex;
+        flex-direction: row;
+        font-size: 13vmin;
+        font-family: Roboto, 'Source Sans Pro', 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',  Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+        font-weight: 600;
+
+        .currentValue {
+            color: rgba(53, 199, 36, 1)
+        }
+
+        .seperatorContainer {
+            width: 10vmin;
+            display: flex;
+            justify-content: center;
+
+            .vSeperator {
+                width: 1vmin;
+                background-color: rgba(208, 211, 214, 1);
+            }
+        }
+
+        .percentage {
+            flex: 1;
+            text-align: right;
+        }
+    }
+
+    .chartBar {
+        background-color: rgba(231, 233, 239, 1);
+        height: 12vmin;
+        border-radius: 3vmin;
+
+        .chartBarFilled {
+            height: 100%;
+            border-radius: 3vmin;
+            background-color: rgba(53, 199, 36, 1);
+        }
+    }
+}

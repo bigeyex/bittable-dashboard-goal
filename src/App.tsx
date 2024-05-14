@@ -4,7 +4,6 @@ import GoalConfig from './components/GoalConfig';
 import Chart from './components/Chart';
 
 export default function App() {
-  console.log('dashboard state', dashboard.state, DashboardState.Config)
   return (
     <div className='goal-app'>
         <div className='goal-chart'>
