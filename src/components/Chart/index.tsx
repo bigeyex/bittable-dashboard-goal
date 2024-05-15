@@ -1,5 +1,6 @@
 import { useAppSelector } from "../../store/hook"
 import Bar from './bar'
+import SemiCircular from './semiCircular'
 
 export interface GoalChartProps {
     currentValueText: string;
@@ -35,12 +36,22 @@ export default () => {
         }
         return result
     }
+
+    let percentage = Math.round(100 * currentValue / Number(config.targetValue))
+    if (percentage > 100) { percentage = 100 }
+    if (percentage < 0) { percentage = 0 }
+
     const props:GoalChartProps = {
         currentValueText: formatNumber(currentValue),
         targetValueText: formatNumber(Number(config.targetValue)),
         color: config.color,
-        percentage: Math.round(currentValue / Number(config.targetValue))
+        percentage: percentage
     }
 
-    return <Bar {...props}/>
+    if (config.chartType === 'semiCircular') {
+        return <SemiCircular {...props} />
+    }
+    else {
+        return <Bar {...props}/>
+    }
 }

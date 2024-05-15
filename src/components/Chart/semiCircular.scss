@@ -1,0 +1,58 @@
+/* 1 px = 0.5 vmin */
+.goalchartSemiCircularContainer {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    width: 100%;
+    overflow: hidden;
+}
+
+.semiCircle {
+    width: 150vmin;
+    margin-top: 15vmin;
+    position: relative;
+
+    .chartRegion {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+
+        .circularPart {
+            height: 100%;
+            width: 100%;
+        }
+    }
+
+    .textRegion {
+        display: flex;
+        flex-direction: column;
+        margin-top: 26vmin;
+        align-items: center;
+
+        .percentage {
+            font-size: 18vmin;
+            font-weight: 900;
+        }
+
+        .detailNumbers {
+            display: flex;
+            flex-direction: row;
+            font-size: 10vmin;
+            font-weight: 600;
+            margin-top: 3vmin;
+
+            .seperatorContainer {
+                width: 10vmin;
+                display: flex;
+                justify-content: center;
+
+                .vSeperator {
+                    width: 1vmin;
+                    background-color: rgba(208, 211, 214, 1);
+                }
+            }
+        }
+    }
+}

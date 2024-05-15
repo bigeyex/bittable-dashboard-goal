@@ -5,7 +5,7 @@ export default ({currentValueText, targetValueText, color, percentage}:GoalChart
     return <div className="goalchartBarContainer">
         <div className="goalchartBar">
             <div className="textRegion">
-                <div className="currentValue">{currentValueText}</div>
+                <div className="currentValue" style={{color: `${color}`}}>{currentValueText}</div>
                 <div className="seperatorContainer">
                     <div className="vSeperator"></div>
                 </div>
@@ -13,7 +13,7 @@ export default ({currentValueText, targetValueText, color, percentage}:GoalChart
                 <div className="percentage">{percentage}%</div>
             </div>
             <div className="chartBar">
-                <div className="chartBarFilled" style={{width: '30%'}}></div>
+                <div className="chartBarFilled" style={{width: `${percentage}%`, backgroundColor: `${color}`}}></div>
             </div>
         </div>
     </div>

@@ -6,7 +6,7 @@ import { IconChevronDown } from '@douyinfe/semi-icons';
 import { DashboardState, bitable, dashboard } from "@lark-base-open/js-sdk";
 import '@semi-bot/semi-theme-feishu-bittable-dashboard/semi.min.css'
 import './style.scss'
-import { ConfigPayload, ConfigState, loadConfig, saveConfig, updatePreviewData } from '../../store/config';
+import { ConfigPayload, ConfigState, loadConfig, saveConfig, setConfigState, updatePreviewData } from '../../store/config';
 import { useAppDispatch, useAppSelector } from '../../store/hook';
 
 export default () => {
@@ -92,7 +92,10 @@ export default () => {
     }
 
     return <Form labelPosition='top' className='configForm' 
-                onChange={(formData) => dispatch(updatePreviewData(formData.values as ConfigPayload))}
+                onChange={(formData) => {
+                    dispatch(updatePreviewData(formData.values as ConfigPayload))
+                    dispatch(setConfigState(formData.values as ConfigPayload))
+                }}
                 onSubmit={(formData) => dispatch(saveConfig(formData as ConfigPayload))}>
 
         <Form.Select field="dataSource" label="数据源" placeholder="请选择数据源" 
@@ -120,15 +123,15 @@ export default () => {
                 })}></Form.Select>
 
         <Form.Select field="chartType" label="图表形状">
-            <Select.Option>条形</Select.Option>
-            <Select.Option>半环</Select.Option>
-            <Select.Option>环形</Select.Option>
+            <Select.Option value="bar">条形</Select.Option>
+            <Select.Option value="semiCircular">半环</Select.Option>
+            <Select.Option value="circular">环形</Select.Option>
         </Form.Select>
 
-        <Form.RadioGroup field="color" label="颜色" initValue='green' type='pureCard' direction='horizontal' className='colorPicker'> 
-            <Form.Radio value="green" style={{backgroundColor: 'rgb(53,199,36)'}}></Form.Radio>
-            <Form.Radio value="blue" style={{backgroundColor: 'rgb(22,192,255)'}}></Form.Radio>
-            <Form.Radio value="yellow" style={{backgroundColor: 'rgb(255,198,12)'}}></Form.Radio>
+        <Form.RadioGroup field="color" label="颜色" initValue='rgb(53,199,36)' type='pureCard' direction='horizontal' className='colorPicker'> 
+            <Form.Radio value="rgb(53,199,36)" style={{backgroundColor: 'rgb(53,199,36)'}}></Form.Radio>
+            <Form.Radio value="rgb(22,192,255)" style={{backgroundColor: 'rgb(22,192,255)'}}></Form.Radio>
+            <Form.Radio value="rgb(255,198,12)" style={{backgroundColor: 'rgb(255,198,12)'}}></Form.Radio>
         </Form.RadioGroup>
 
         <Divider/>

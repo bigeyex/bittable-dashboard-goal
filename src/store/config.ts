@@ -12,6 +12,7 @@ export interface ConfigState {
     currentValueAggField: string
     dataRange: string
     dataSource: string
+    chartType: string
     numericAbbrKilos: boolean
     numericDigits: number
     targetValue: string
@@ -28,12 +29,13 @@ export type ConfigPayload = Partial<ConfigState>
 // Define the initial state using that type
 const initialState: ConfigSliceState = {
   config: {
-    color: "green",
+    color: "rgb(255,198,12)",
     currentValueAggMethod: "sum",
     currentValueCalcMethod: "count",
     currentValueAggField: "",
     dataRange: "{\"type\":\"ALL\"}",
     dataSource: "",
+    chartType: "bar",
     numericAbbrKilos: false,
     numericDigits: 0,
     targetValue: '100',
