@@ -14,8 +14,6 @@ export default ({currentValueText, targetValueText, color, percentage}:GoalChart
         refreshMode: 'debounce',
         refreshRate: 1000,
         onResize: () => {
-            console.log('before resize', chartRef.current?.getEchartsInstance().getHeight())
-            console.log('resize', width, height)
             chartRef.current?.getEchartsInstance().resize({width: width, height: height!*2})
         }
       });
