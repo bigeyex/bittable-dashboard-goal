@@ -78,12 +78,12 @@ export const SemiCircularPart = forwardRef<ReactECharts, CircularPartProps>(({co
     return <ReactECharts ref={ref} option={option} className={className} opts={{renderer: 'svg'}}/>
 })
 
-export const CircularPart = ({color, percentage, className}:CircularPartProps) => {
+export const CircularPart = forwardRef<ReactECharts, CircularPartProps>(({color, percentage, className}, ref) => {
     const option = {
         series: [
             makeCircularSeriesConfig(greyColor, 180, -180, '6vmin'),
             makeCircularSeriesConfig(color, 180, Math.round(180-360*percentage/100), '6vmin'),
           ]
     }
-    return <ReactECharts option={option} className={className} opts={{renderer: 'svg'}}/>
-}
+    return <ReactECharts ref={ref} option={option} className={className} opts={{renderer: 'svg'}}/>
+})

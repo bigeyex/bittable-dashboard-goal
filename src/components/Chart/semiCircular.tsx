@@ -5,6 +5,7 @@ import { useResizeDetector } from 'react-resize-detector';
 import './semiCircular.scss'
 import { createRef, useEffect, useRef } from "react";
 import ReactECharts from 'echarts-for-react';
+import { isConfigLayout } from "../common";
 
 
 export default ({currentValueText, targetValueText, color, percentage}:GoalChartProps) => {
@@ -20,10 +21,9 @@ export default ({currentValueText, targetValueText, color, percentage}:GoalChart
 
     useEffect(() => {
         chartRef.current?.getEchartsInstance().resize()
-        console.log('loaded')
     }, [])
 
-    return <div className="goalchartSemiCircularContainer">
+    return <div className={'goalchartSemiCircularContainer' + (isConfigLayout() ? ' config' : '')}>
         <div className="semiCircle">
             <div className="textRegion">
                 <div className="percentage">{percentage}%</div>

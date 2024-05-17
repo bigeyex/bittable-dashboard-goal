@@ -5,43 +5,54 @@
     justify-content: center;
     width: 100%;
 }
-.goalchartBar {
-    width: 150vmin;
-    display: flex;
-    flex-direction: column;
-    gap: 10vmin;
-    
-    .textRegion {
+
+@mixin goalChartBarMixin($pvmin: 1) {
+    .goalchartBar {
+        width: 150vmin * $pvmin;
         display: flex;
-        flex-direction: row;
-        font-size: 13vmin;
-        font-weight: 600;
-
-        .seperatorContainer {
-            width: 10vmin;
+        flex-direction: column;
+        gap: 10vmin * $pvmin;
+        
+        .textRegion {
             display: flex;
-            justify-content: center;
+            flex-direction: row;
+            font-size: 13vmin * $pvmin;
+            font-weight: 600;
 
-            .vSeperator {
-                width: 1vmin;
-                background-color: rgba(208, 211, 214, 1);
+            .seperatorContainer {
+                width: 10vmin * $pvmin;
+                display: flex;
+                justify-content: center;
+
+                .vSeperator {
+                    width: 1vmin * $pvmin;
+                    background-color: rgba(208, 211, 214, 1);
+                }
+            }
+
+            .percentage {
+                flex: 1;
+                text-align: right;
             }
         }
 
-        .percentage {
-            flex: 1;
-            text-align: right;
+        .chartBar {
+            background-color: rgba(231, 233, 239, 1);
+            height: 12vmin * $pvmin;
+            border-radius: 3vmin * $pvmin;
+
+            .chartBarFilled {
+                height: 100%;
+                border-radius: 3vmin * $pvmin;
+            }
         }
     }
+}
 
-    .chartBar {
-        background-color: rgba(231, 233, 239, 1);
-        height: 12vmin;
-        border-radius: 3vmin;
+.goalchartBarContainer {
+    @include goalChartBarMixin()
+}
 
-        .chartBarFilled {
-            height: 100%;
-            border-radius: 3vmin;
-        }
-    }
+.goalchartBarContainer.config {
+    @include goalChartBarMixin($pvmin: 0.8)
 }

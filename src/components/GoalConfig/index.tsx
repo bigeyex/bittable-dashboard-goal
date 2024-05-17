@@ -40,26 +40,6 @@ export default () => {
         return dashboard.getTableDataRange(tableId);
     }, [])
 
-    const fetchInitData = async() => {
-        const tableListData = await getTableList();
-        const configState = await dispatch<Promise<ConfigPayload>>(loadConfig())
-        setTableList(tableListData);
-        if (tableListData.length > 0) {
-            const dataRange = await getTableRange(tableListData[0].tableId)
-            setTableDataRange(dataRange)
-            if (configState.dataSource != '') {
-                setDefaultValues.form(configState)
-            }
-            else {
-                setDefaultValues.dataSource(tableListData[0].tableId)
-                setDefaultValues.dataRange(JSON.stringify(dataRange[0]))
-            }
-        }
-    }
-    useEffect(() => {
-        fetchInitData()
-    }, [])
-
     const onDataSourceChange = async (tableId:string) => {
         const dataRange = await getTableRange(tableId)
         setTableDataRange(dataRange)
@@ -76,8 +56,26 @@ export default () => {
         if(numberFieldsInfo.length > 0) {
             setDefaultValues.currentValueAggField(numberFieldsInfo[0].fieldId)
         }
-        
     }
+
+    const fetchInitData = async() => {
+        const tableListData = await getTableList();
+        const configState = await dispatch<Promise<ConfigPayload>>(loadConfig())
+        setTableList(tableListData);
+
+        if (tableListData.length > 0) {
+            if (configState.dataSource != '') {
+                await onDataSourceChange(configState.dataSource!)
+                setDefaultValues.form(configState)
+            }
+            else {
+                await onDataSourceChange(tableListData[0].tableId)
+            }
+        }
+    }
+    useEffect(() => {
+        fetchInitData()
+    }, [])
 
     const DefaultValueSetter = () => {
         const dataRangeFieldApi = useFieldApi('dataRange')

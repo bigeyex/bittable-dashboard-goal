@@ -7,52 +7,62 @@
     overflow: hidden;
 }
 
-.semiCircle {
-    width: 150vmin;
-    margin-top: 15vmin;
-    position: relative;
+@mixin semiCircleMixin($pvmin: 1) {
+    .semiCircle {
+        width: 130vmin * $pvmin;
+        margin-top: 15vmin * $pvmin;
+        position: relative;
 
-    .chartRegion {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
+        .chartRegion {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
 
-        .circularPart {
-            height: 100%;
-            width: 100%;
-        }
-    }
-
-    .textRegion {
-        display: flex;
-        flex-direction: column;
-        margin-top: 26vmin;
-        align-items: center;
-
-        .percentage {
-            font-size: 18vmin;
-            font-weight: 900;
+            .circularPart {
+                height: 100%;
+                width: 100%;
+            }
         }
 
-        .detailNumbers {
+        .textRegion {
             display: flex;
-            flex-direction: row;
-            font-size: 10vmin;
-            font-weight: 600;
-            margin-top: 3vmin;
+            flex-direction: column;
+            margin-top: 26vmin * $pvmin;
+            align-items: center;
 
-            .seperatorContainer {
-                width: 10vmin;
+            .percentage {
+                font-size: 18vmin * $pvmin;
+                font-weight: 900;
+            }
+
+            .detailNumbers {
                 display: flex;
-                justify-content: center;
+                flex-direction: row;
+                font-size: 10vmin * $pvmin;
+                font-weight: 600;
+                margin-top: 3vmin * $pvmin;
 
-                .vSeperator {
-                    width: 1vmin;
-                    background-color: rgba(208, 211, 214, 1);
+                .seperatorContainer {
+                    width: 10vmin * $pvmin;
+                    display: flex;
+                    justify-content: center;
+
+                    .vSeperator {
+                        width: 1vmin * $pvmin;
+                        background-color: rgba(208, 211, 214, 1);
+                    }
                 }
             }
         }
     }
+}
+
+.goalchartSemiCircularContainer {
+    @include semiCircleMixin()
+}
+
+.goalchartSemiCircularContainer.config {
+    @include semiCircleMixin($pvmin: 0.8)
 }

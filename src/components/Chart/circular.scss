@@ -1,0 +1,65 @@
+/* 1 px = 0.5 vmin */
+.goalchartCircularContainer {
+    display: flex;
+    align-items: flex-center;
+    justify-content: center;
+    flex-direction: row;
+    width: 100%;
+    overflow: hidden;
+}
+
+@mixin circleMixin($pvmin: 1) {
+    .circle {
+        display: flex;
+        flex-direction: row;
+        gap: 10vmin * $pvmin;
+        justify-content: center;
+        align-items: center;
+
+        .detailNumbers {
+            font-size: 13vmin * $pvmin;
+            font-weight: 600;
+            display: flex;
+
+            .seperatorContainer {
+                width: 10vmin * $pvmin;
+                display: flex;
+                justify-content: center;
+
+                .vSeperator {
+                    width: 1vmin * $pvmin;
+                    background-color: rgba(208, 211, 214, 1);
+                }
+            }
+        }
+
+        .chartRegion {
+            position: relative;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+            width: 50vmin * $pvmin;
+            height: 50vmin * $pvmin;
+            
+            .circularPart {
+                position: absolute;
+                height: 100%;
+                width: 100%;
+            }
+
+            .percentage {
+                font-size: 13vmin * $pvmin;
+                font-weight: 900;
+            }
+        }
+
+    }
+}
+
+.goalchartCircularContainer {
+    @include circleMixin()
+}
+
+.goalchartCircularContainer.config {
+    @include circleMixin($pvmin: 0.8)
+}

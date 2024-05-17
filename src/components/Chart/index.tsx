@@ -1,5 +1,6 @@
 import { useAppSelector } from "../../store/hook"
 import Bar from './bar'
+import Circular from "./circular";
 import SemiCircular from './semiCircular'
 
 export interface GoalChartProps {
@@ -50,6 +51,9 @@ export default () => {
 
     if (config.chartType === 'semiCircular') {
         return <SemiCircular {...props} />
+    }
+    else if (config.chartType === 'circular') {
+        return <Circular {...props} />
     }
     else {
         return <Bar {...props}/>
