@@ -24,10 +24,10 @@ html, #root, body {
   }
   
   .config-panel {
-    width: 300px;
+    width: 340px;
     overflow: auto;
     /* justify-content:flex-start; */
     border-left: 1px solid #dee0e3;
-    padding: 10px 20px 35px 20px;
+    position: relative;
     /* width: 350px; */
   }

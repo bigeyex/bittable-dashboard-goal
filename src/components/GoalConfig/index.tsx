@@ -3,6 +3,8 @@ import { FieldType, IDataRange, IField, ITable, SourceType, base } from '@lark-b
 import { Form, Button, Divider, Select, useFieldApi, useFormApi } from '@douyinfe/semi-ui';
 import { TriggerRenderProps } from '@douyinfe/semi-ui/lib/es/select';
 import { IconChevronDown } from '@douyinfe/semi-icons';
+import IconFormular from '/assets/icon-formular.svg?react'
+import IconMore from '/assets/icon-more.svg?react'
 import { DashboardState, bitable, dashboard } from "@lark-base-open/js-sdk";
 import '@semi-bot/semi-theme-feishu-bittable-dashboard/semi.min.css'
 import './style.scss'
@@ -95,118 +97,108 @@ export default () => {
                     dispatch(setConfigState(formData.values as ConfigPayload))
                 }}
                 onSubmit={(formData) => dispatch(saveConfig(formData as ConfigPayload))}>
+        <div className='configFields'>
+            <Form.Select field="dataSource" label="数据源" placeholder="请选择数据源" 
+                onChange={value => {onDataSourceChange(value as string)}}
+                optionList={tableList.map(source => ({
+                    value: source.tableId,
+                    label: source.tableName
+                }))} ></Form.Select>
 
-        <Form.Select field="dataSource" label="数据源" placeholder="请选择数据源" 
-            onChange={value => {onDataSourceChange(value as string)}}
-            optionList={tableList.map(source => ({
-                value: source.tableId,
-                label: source.tableName
-              }))} ></Form.Select>
-
-        <Form.Select field="dataRange" label="数据范围" placeholder="请选择数据范围" 
-                // onChange={handleDataRangeChange}
-                optionList={tableDataRange.map(range => {
-                  const { type } = range;
-                  if (type === SourceType.ALL) {
-                    return {
-                      value: JSON.stringify(range),
-                      label: '全部数据'
+            <Form.Select field="dataRange" label="数据范围" placeholder="请选择数据范围" 
+                    // onChange={handleDataRangeChange}
+                    optionList={tableDataRange.map(range => {
+                    const { type } = range;
+                    if (type === SourceType.ALL) {
+                        return {
+                        value: JSON.stringify(range),
+                        label: '全部数据'
+                        }
+                    } else {
+                        return {
+                        value: JSON.stringify(range),
+                        label: range.viewName
+                        }
                     }
-                  } else {
-                    return {
-                      value: JSON.stringify(range),
-                      label: range.viewName
-                    }
-                  }
-                })}></Form.Select>
+                    })}></Form.Select>
 
-        <Form.Select field="chartType" label="图表形状">
-            <Select.Option value="bar">条形</Select.Option>
-            <Select.Option value="semiCircular">半环</Select.Option>
-            <Select.Option value="circular">环形</Select.Option>
-        </Form.Select>
+            <Form.RadioGroup field="chartType" label="图表形状" type='pureCard' direction='horizontal' className='chartTypePicker'>
+                <Form.Radio value="bar">
+                    <div className='iconFrame bar'></div>
+                    <div className='chartTypeLabel'>条形</div>
+                </Form.Radio>
+                <Form.Radio value="semiCircular">
+                    <div className='iconFrame semiCircular'></div>
+                    <div className='chartTypeLabel'>半环</div>
+                </Form.Radio>
+                <Form.Radio value="circular">
+                    <div className='iconFrame circular'></div>
+                    <div className='chartTypeLabel'>环形</div>
+                </Form.Radio>
+            </Form.RadioGroup>
 
-        <Form.RadioGroup field="color" label="颜色" initValue='rgb(53,199,36)' type='pureCard' direction='horizontal' className='colorPicker'> 
-            <Form.Radio value="rgb(53,199,36)" style={{backgroundColor: 'rgb(53,199,36)'}}></Form.Radio>
-            <Form.Radio value="rgb(22,192,255)" style={{backgroundColor: 'rgb(22,192,255)'}}></Form.Radio>
-            <Form.Radio value="rgb(255,198,12)" style={{backgroundColor: 'rgb(255,198,12)'}}></Form.Radio>
-        </Form.RadioGroup>
+            <Form.RadioGroup field="color" label="颜色" initValue='rgb(53,199,36)' type='pureCard' direction='horizontal' className='colorPicker'> 
+                <Form.Radio value="rgb(53,199,36)" style={{borderColor: 'rgb(53,199,36)'}}>
+                    <div className='swatch' style={{backgroundColor: 'rgb(53,199,36)'}}></div>
+                </Form.Radio>
+                <Form.Radio value="rgb(22,192,255)" style={{borderColor: 'rgb(22,192,255)'}}>
+                    <div className='swatch' style={{backgroundColor: 'rgb(22,192,255)'}}></div>
+                </Form.Radio>
+                <Form.Radio value="rgb(255,198,12)" style={{borderColor: 'rgb(255,198,12)'}}>
+                    <div className='swatch' style={{backgroundColor: 'rgb(255,198,12)'}}></div>
+                </Form.Radio>
+            </Form.RadioGroup>
 
-        <Divider/>
+            <Divider/>
 
-        <Form.Input field="targetValue" label="目标值" initValue={100}></Form.Input>
+            <Form.Input field="targetValue" label="目标值" initValue={100}></Form.Input>
 
-        <Form.InputGroup label={{ text: "当前值" }} className='currentValueLabelGroup'>
-            <Form.Select field="currentValueCalcMethod" initValue="count">
+            <Form.Select field="currentValueCalcMethod" label="当前值" initValue="count">
                 <Select.Option value="count">统计字段总数</Select.Option>
                 <Select.Option value="calc">统计字段数值</Select.Option>
             </Form.Select>
-            <Form.Select field="currentValueAggMethod" className='currentValueAggMethod' 
-                    initValue="SUM" triggerRender={triggerRenderBorderless}>
-                <Select.Option value="SUM">求和</Select.Option>
-                <Select.Option value="AVERAGE">平均值</Select.Option>
-                <Select.Option value="MAX">最大值</Select.Option>
-                <Select.Option value="MIN">最小值</Select.Option>
-            </Form.Select>
-            <Form.Select field="currentValueAggField" initValue=""
-                    optionList={ numberFieldList.map(fieldInfo => ({value: fieldInfo.fieldId, label: fieldInfo.fieldName}) )}>
-            </Form.Select>
-        </Form.InputGroup>
 
-        <Form.InputGroup label={{ text: "单位" }} className='fieldUnit'>
-            <Form.Input field="unitSign" initValue="$" className='unitSymbol'></Form.Input>
-            <Form.RadioGroup type="button" field="unitPosition" initValue="left" className="unitPosition">
-                <Form.Radio value="left">左</Form.Radio>
-                <Form.Radio value="right">右</Form.Radio>
-            </Form.RadioGroup>
-        </Form.InputGroup>
-
-        <Form.InputGroup label={{ text: "格式" }} className='fieldNumericFormat'>
-            <Form.Select field="numericDigits" initValue={0}>
-                <Select.Option value={0}>整数</Select.Option>
-                <Select.Option value={1}>保留1位小数</Select.Option>
-                <Select.Option value={2}>保留2位小数</Select.Option>
-            </Form.Select>
-            <Form.Checkbox field="numericAbbrKilos" initValue={false}>千位缩写</Form.Checkbox>
-
-        </Form.InputGroup>
-
+                
             
-        <div className='configActionButton'>
-            <Button type="primary" htmlType="submit" className="btn-margin-right">确定</Button>
+            <Form.Select field="currentValueAggField" initValue=""  label="选择字段" className='currentValueAggField' showArrow={false}
+                    optionList={ numberFieldList.map(fieldInfo => ({value: fieldInfo.fieldId, label: fieldInfo.fieldName}) )}
+                    prefix={<div className='prefixIcon'><IconFormular/></div>}
+                    suffix={
+                        <Form.Select field="currentValueAggMethod" className='currentValueAggMethod' noLabel={true} showArrow={false}
+                                initValue="SUM"  onFocus={(e) => {e.stopPropagation()}}
+                                suffix={<div className='suffixIcon'><IconMore/></div>}>
+                            <Select.Option value="SUM">求和</Select.Option>
+                            <Select.Option value="AVERAGE">平均值</Select.Option>
+                            <Select.Option value="MAX">最大值</Select.Option>
+                            <Select.Option value="MIN">最小值</Select.Option>
+                        </Form.Select>
+                    }
+                    >
+            </Form.Select>
+
+            <Form.InputGroup label={{ text: "单位" }} className='fieldUnit'>
+                <Form.Input field="unitSign" initValue="$" className='unitSymbol'></Form.Input>
+                <Form.RadioGroup type="button" field="unitPosition" initValue="left" className="unitPosition">
+                    <Form.Radio value="left">左</Form.Radio>
+                    <Form.Radio value="right">右</Form.Radio>
+                </Form.RadioGroup>
+            </Form.InputGroup>
+
+            <Form.InputGroup label={{ text: "格式" }} className='fieldNumericFormat'>
+                <Form.Select field="numericDigits" initValue={0}>
+                    <Select.Option value={0}>整数</Select.Option>
+                    <Select.Option value={1}>保留1位小数</Select.Option>
+                    <Select.Option value={2}>保留2位小数</Select.Option>
+                </Form.Select>
+                <Form.Checkbox field="numericAbbrKilos" initValue={false}>千位缩写</Form.Checkbox>
+
+            </Form.InputGroup>
+
+        </div>
+        <div className='configActions'>
+            <Button theme='solid' type="primary" htmlType="submit" className="btn-margin-right">确定</Button>
         </div>
         
         <DefaultValueSetter/>
     </Form>
 }
-
-
-const triggerRenderBorderless = ({ value, ...rest }:TriggerRenderProps) => {
-    return (
-        <div
-            style={{
-                minWidth: '112',
-                height: 32,
-                display: 'flex',
-                alignItems: 'center',
-                paddingLeft: 8,
-                borderRadius: 3,
-            }}
-        >
-            <div
-                style={{
-                    margin: 4,
-                    whiteSpace: 'nowrap',
-                    textOverflow: 'ellipsis',
-                    flexGrow: 1,
-                    overflow: 'hidden',
-                    display: 'flex',
-                    alignItems: 'center',
-                }}
-            >
-                {value.map(item => item.label).join(' , ')}
-                <IconChevronDown style={{ margin: '0 8px', flexShrink: 0 }} />
-            </div>
-        </div>
-    );
-};

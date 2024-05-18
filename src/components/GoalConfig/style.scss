@@ -1,5 +1,31 @@
 .configForm.semi-form {
     width: 100%;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+
+    .configFields {
+        width: 300px;
+        padding: 10px 20px 0 20px;
+        flex: 1;
+        overflow: auto;
+    }
+
+    .configActions {
+        height: 72px;
+        padding: 0 20px;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+
+        .semi-button {
+            width: 80px;
+            border-radius: 6px;
+            font-weight: 400;
+        }
+    }
 
     .semi-form-field-label-text {
         font-weight: bold;
@@ -13,31 +39,143 @@
         padding: 10px 0;
     }
 
-    .colorPicker {
-        display: flex;
-        background-color: rgb(245,246,247);
-        border: none;
-        gap: 8px;
-        height: 32px;
-        align-items: center;
-        padding-left: 20px;
+    .chartTypePicker {
+        gap: 12px;
 
         .semi-radio {
-            border-radius: 50%;
-            width: 25px;
-            height: 25px;
+            width: 86px;
+            height: 96px;
+            padding: 6px;
+            border-radius: 8px;
+            border: 1px solid #DEE0E3;
+            background: none;
+
+            .semi-radio-content {
+                flex: 1;
+            }
+
+            .semi-radio-addon {
+                flex-direction: column;
+                display: flex;
+                gap: 10px;
+            }
+
+            .iconFrame {
+                height: 48px;
+                border-radius: 6px;
+                width: 100%;
+                background-color: #F5F6F7;
+                background-position: center center;
+                background-repeat: no-repeat;
+            }
+
+            .iconFrame.bar {
+                background-image: url(assets/icon-charttype-bar.svg);
+            }
+            .iconFrame.semiCircular {
+                background-image: url(assets/icon-charttype-semicircular.svg);
+            }
+            .iconFrame.circular {
+                background-image: url(assets/icon-charttype-circular.svg);
+            }
+
+            .chartTypeLabel {
+                font-weight: 400;
+            }
+        }
+
+        .semi-radio:hover, .semi-radio:active{
+            background: none;
+            box-shadow: 0 6px 18px -6px rgba(31, 35, 41, 0.05);
+        }
+
+        .semi-radio-checked {
+            background: none;
+            border: 1px solid #1456F0;
+
+            .iconFrame {
+                background-color: #F0F4FF;
+            }
+
+            .iconFrame.bar {
+                background-image: url(assets/icon-charttype-bar-selected.svg);
+            }
+            .iconFrame.semiCircular {
+                background-image: url(assets/icon-charttype-semicircular-selected.svg);
+            }
+            .iconFrame.circular {
+                background-image: url(assets/icon-charttype-circular-selected.svg);
+            }
+
+            .chartTypeLabel {
+                font-weight: 500;
+                color: #1456F0;
+            }
+        }
+       
+    }
+
+    .colorPicker {
+        display: flex;
+        border: none;
+        gap: 6px;
+        align-items: center;
+        
+        .semi-radio {
             padding: 0;
+            border-width: 0;
+            padding: 1px;
+            
+            .swatch {
+                border-radius: 4px;
+                width: 18px;
+                height: 18px;
+            }
+        }
+
+        .semi-radio-checked {
+            border-width: 2px;
+
+            .swatch {
+                background-image: url(assets/icon-colorpicker-checked.svg);
+                background-position: center center;
+                background-repeat: no-repeat;
+            }
+        }
+        
+    }
+    
+    .currentValueAggField {
+        .prefixIcon {
+            margin: 4px 4px 0 8px;
+        }
+
+        .semi-form-field {
+            padding: 0;
+        }
+
+        .currentValueAggMethod {
+            border: none;
+            height: 24px;
+            
+            .semi-select-selection {
+                font-size: 12px;
+                background-color: rgba(31, 35, 41, 0.1);
+                border-radius: 6px;
+                color: rgba(100, 106, 115, 1);
+                padding: 0 4px;
+            }
+
+            .semi-select-arrow-empty {
+                display: none;
+            }
+
+            .suffixIcon {
+                margin: 0 8px 0 4px;
+            }
         }
     }
 
-    .currentValueLabelGroup {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .currentValueAggMethod {
-        align-self: flex-end;
-    }
 
     .fieldUnit {
         display: flex;
@@ -45,11 +183,29 @@
         gap: 10px;
 
         .unitSymbol {
-            flex: 1;
+            width: 144px;
         }
 
         .unitPosition {
             height: 30px;
+            border: 1px solid rgba(222, 224, 227, 1);
+            flex: 1;
+            display: flex;
+            .semi-radio {
+                flex: 1;
+                padding: 3px;
+
+                .semi-radio-addon-buttonRadio {
+                    width: 26px;
+                    color: rgba(31, 35, 41, 1);
+                }
+
+                .semi-radio-addon-buttonRadio-checked {
+                    background-color: rgba(20, 86, 240, 0.1);
+                    color: rgba(20, 86, 240, 1);
+                    font-weight: 500;
+                }
+            }
         }
     }
 
@@ -61,13 +217,6 @@
     }
 }
 
-.semi-form {
-    .semi-radioGroup {
-        border: 1px solid #D0D3D6;
-        height: 32px;
-    }
-
-}
 
 /* fix broken semi dsm */
 .semi-input-group .semi-select:first-child,
