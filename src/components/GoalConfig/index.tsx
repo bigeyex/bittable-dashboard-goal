@@ -4,7 +4,7 @@ import { Form, Button, Divider, Select, useFieldApi, useFormApi } from '@douyinf
 import IconFormular from '/src/assets/icons/icon-formular.svg?react'
 import IconMore from '/src/assets/icons/icon-more.svg?react'
 import { DashboardState, bitable, dashboard } from "@lark-base-open/js-sdk";
-import '@semi-bot/semi-theme-feishu-bittable-dashboard/semi.min.css'
+import '../../assets/semi-feishu-custom.min.css'
 import './style.scss'
 import config, { ConfigPayload, ConfigState, loadConfig, saveConfig, setConfigState, updatePreviewData } from '../../store/config';
 import { useAppDispatch, useAppSelector } from '../../store/hook';
@@ -19,12 +19,27 @@ export default () => {
     const [numberFieldList, setNumberFieldList] = useState<NumberFieldInfo[]>([])
     const config = useAppSelector(store => store.config.config)
     
+    // because Form in semi-design requires formApi, and it has to be
+    // within the Form's context, so an additional component (DefaultValueSetter) is created to 
+    // keep formApi instances
     const emptyDefaultValueSetter = (value: string) => {}
     let setDefaultValues = {
         form: (values:ConfigPayload) => {},
         dataSource: emptyDefaultValueSetter,
         dataRange: emptyDefaultValueSetter,
         currentValueAggField: emptyDefaultValueSetter
+    }
+
+    const DefaultValueSetter = () => {
+        const dataRangeFieldApi = useFieldApi('dataRange')
+        const dataSourceFieldApi = useFieldApi('dataSource')
+        const currentValueAggFieldApi = useFieldApi('currentValueAggField')
+        const formApi = useFormApi()
+        setDefaultValues.form = (values ) => { formApi.setValues(values) }
+        setDefaultValues.dataSource = (value: string) => { dataSourceFieldApi.setValue(value) }
+        setDefaultValues.dataRange = (value: string) => { dataRangeFieldApi.setValue(value) }
+        setDefaultValues.currentValueAggField = (value: string) => { currentValueAggFieldApi.setValue(value) }
+        return '';
     }
 
     const getTableList = useCallback(async () => {
@@ -81,18 +96,6 @@ export default () => {
     useEffect(() => {
         fetchInitData()
     }, [])
-
-    const DefaultValueSetter = () => {
-        const dataRangeFieldApi = useFieldApi('dataRange')
-        const dataSourceFieldApi = useFieldApi('dataSource')
-        const currentValueAggFieldApi = useFieldApi('currentValueAggField')
-        const formApi = useFormApi()
-        setDefaultValues.form = (values ) => { formApi.setValues(values) }
-        setDefaultValues.dataSource = (value: string) => { dataSourceFieldApi.setValue(value) }
-        setDefaultValues.dataRange = (value: string) => { dataRangeFieldApi.setValue(value) }
-        setDefaultValues.currentValueAggField = (value: string) => { currentValueAggFieldApi.setValue(value) }
-        return '';
-    }
 
     return <Form labelPosition='top' className='configForm' 
                 onChange={(formData) => {
