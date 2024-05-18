@@ -70,13 +70,13 @@
             }
 
             .iconFrame.bar {
-                background-image: url(assets/icon-charttype-bar.svg);
+                background-image: url(/src/assets/icons/icon-charttype-bar.svg);
             }
             .iconFrame.semiCircular {
-                background-image: url(assets/icon-charttype-semicircular.svg);
+                background-image: url(/src/assets/icons/icon-charttype-semicircular.svg);
             }
             .iconFrame.circular {
-                background-image: url(assets/icon-charttype-circular.svg);
+                background-image: url(/src/assets/icons/icon-charttype-circular.svg);
             }
 
             .chartTypeLabel {
@@ -98,13 +98,13 @@
             }
 
             .iconFrame.bar {
-                background-image: url(assets/icon-charttype-bar-selected.svg);
+                background-image: url(/src/assets/icons/icon-charttype-bar-selected.svg);
             }
             .iconFrame.semiCircular {
-                background-image: url(assets/icon-charttype-semicircular-selected.svg);
+                background-image: url(/src/assets/icons/icon-charttype-semicircular-selected.svg);
             }
             .iconFrame.circular {
-                background-image: url(assets/icon-charttype-circular-selected.svg);
+                background-image: url(/src/assets/icons/icon-charttype-circular-selected.svg);
             }
 
             .chartTypeLabel {
@@ -137,7 +137,7 @@
             border-width: 2px;
 
             .swatch {
-                background-image: url(assets/icon-colorpicker-checked.svg);
+                background-image: url(/src/assets/icons/icon-colorpicker-checked.svg);
                 background-position: center center;
                 background-repeat: no-repeat;
             }
@@ -172,6 +172,13 @@
 
             .suffixIcon {
                 margin: 0 8px 0 4px;
+            }
+        }
+
+        .currentValueAggMethod.semi-select-open {
+            .semi-select-selection {
+                background-color: rgba(20, 86, 240, 0.1);
+                color: rgba(20, 86, 240, 1);
             }
         }
     }
@@ -217,6 +224,24 @@
     }
 }
 
+.aggMethodDropdown {
+    min-width: 120px !important;
+    .semi-select-option-icon {
+        order: 2;
+        margin-left: auto;
+        margin-right: 0;
+
+        svg {
+            width: 12px;
+            height: 12px;
+        }
+    }
+
+    .semi-select-option-selected {
+        color: rgba(20, 86, 240, 1);
+        font-weight: 400;
+    }
+}
 
 /* fix broken semi dsm */
 .semi-input-group .semi-select:first-child,

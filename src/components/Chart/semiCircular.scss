@@ -64,5 +64,9 @@
 }
 
 .goalchartSemiCircularContainer.config {
-    @include semiCircleMixin($pvmin: 0.8)
+    @include semiCircleMixin($pvmin: 0.8);
+
+    .semiCircle {
+        margin-top: 20vmin;
+    }
 }

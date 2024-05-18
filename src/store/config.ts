@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from './index'
 import { AppThunk } from './hook'
-import { dashboard, IDataCondition, ISeries } from '@lark-base-open/js-sdk'
+import { dashboard, IDataCondition, ISeries, DashboardState } from '@lark-base-open/js-sdk'
 import { setCurrentValueFromIData } from './chartData'
 
 // Define a type for the slice state
@@ -88,6 +88,9 @@ export const saveConfig = (payload:ConfigPayload):AppThunk => (async (dispatch, 
 
 // 从多维表格中读取图表配置
 export const loadConfig = ():AppThunk<Promise<ConfigPayload>> => (async (dispatch, getState):Promise<ConfigPayload> => {
+  if (dashboard.state === DashboardState.Create) {
+    return initialState.config
+  }
   const dashboardConfig = await dashboard.getConfig()
   if (dashboardConfig.customConfig && 'config' in dashboardConfig.customConfig) {
     const configState = dashboardConfig.customConfig['config'] as ConfigState

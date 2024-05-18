@@ -1,15 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { FieldType, IDataRange, IField, ITable, SourceType, base } from '@lark-base-open/js-sdk';
 import { Form, Button, Divider, Select, useFieldApi, useFormApi } from '@douyinfe/semi-ui';
-import { TriggerRenderProps } from '@douyinfe/semi-ui/lib/es/select';
-import { IconChevronDown } from '@douyinfe/semi-icons';
-import IconFormular from '/assets/icon-formular.svg?react'
-import IconMore from '/assets/icon-more.svg?react'
+import IconFormular from '/src/assets/icons/icon-formular.svg?react'
+import IconMore from '/src/assets/icons/icon-more.svg?react'
 import { DashboardState, bitable, dashboard } from "@lark-base-open/js-sdk";
 import '@semi-bot/semi-theme-feishu-bittable-dashboard/semi.min.css'
 import './style.scss'
-import { ConfigPayload, ConfigState, loadConfig, saveConfig, setConfigState, updatePreviewData } from '../../store/config';
+import config, { ConfigPayload, ConfigState, loadConfig, saveConfig, setConfigState, updatePreviewData } from '../../store/config';
 import { useAppDispatch, useAppSelector } from '../../store/hook';
+import { themeColors } from '../common';
 
 export default () => {
     type TableInfo = {tableId: string, tableName: string}
@@ -18,6 +17,7 @@ export default () => {
     type NumberFieldInfo = {fieldId: string, fieldName: string}
     const dispatch = useAppDispatch()
     const [numberFieldList, setNumberFieldList] = useState<NumberFieldInfo[]>([])
+    const config = useAppSelector(store => store.config.config)
     
     const emptyDefaultValueSetter = (value: string) => {}
     let setDefaultValues = {
@@ -41,7 +41,7 @@ export default () => {
     const getTableRange = useCallback((tableId: string) => {
         return dashboard.getTableDataRange(tableId);
     }, [])
-
+    
     const onDataSourceChange = async (tableId:string) => {
         const dataRange = await getTableRange(tableId)
         setTableDataRange(dataRange)
@@ -71,7 +71,10 @@ export default () => {
                 setDefaultValues.form(configState)
             }
             else {
-                await onDataSourceChange(tableListData[0].tableId)
+                const firstTableId = tableListData[0].tableId
+                setDefaultValues.dataSource(firstTableId)
+                await onDataSourceChange(firstTableId)
+                setDefaultValues.dataRange('{"type":"ALL"}')
             }
         }
     }
@@ -137,16 +140,14 @@ export default () => {
                 </Form.Radio>
             </Form.RadioGroup>
 
-            <Form.RadioGroup field="color" label="颜色" initValue='rgb(53,199,36)' type='pureCard' direction='horizontal' className='colorPicker'> 
-                <Form.Radio value="rgb(53,199,36)" style={{borderColor: 'rgb(53,199,36)'}}>
-                    <div className='swatch' style={{backgroundColor: 'rgb(53,199,36)'}}></div>
-                </Form.Radio>
-                <Form.Radio value="rgb(22,192,255)" style={{borderColor: 'rgb(22,192,255)'}}>
-                    <div className='swatch' style={{backgroundColor: 'rgb(22,192,255)'}}></div>
-                </Form.Radio>
-                <Form.Radio value="rgb(255,198,12)" style={{borderColor: 'rgb(255,198,12)'}}>
-                    <div className='swatch' style={{backgroundColor: 'rgb(255,198,12)'}}></div>
-                </Form.Radio>
+            <Form.RadioGroup field="color" label="颜色" initValue='rgba(53, 189, 75, 1)' type='pureCard' direction='horizontal' className='colorPicker'> 
+                {
+                    themeColors.map((color) => {
+                        return <Form.Radio key={color} value={color} style={{borderColor: color}}>
+                            <div className='swatch' style={{backgroundColor: color}}></div>
+                        </Form.Radio>
+                    })
+                }
             </Form.RadioGroup>
 
             <Divider/>
@@ -159,22 +160,23 @@ export default () => {
             </Form.Select>
 
                 
-            
-            <Form.Select field="currentValueAggField" initValue=""  label="选择字段" className='currentValueAggField' showArrow={false}
-                    optionList={ numberFieldList.map(fieldInfo => ({value: fieldInfo.fieldId, label: fieldInfo.fieldName}) )}
-                    prefix={<div className='prefixIcon'><IconFormular/></div>}
-                    suffix={
-                        <Form.Select field="currentValueAggMethod" className='currentValueAggMethod' noLabel={true} showArrow={false}
-                                initValue="SUM"  onFocus={(e) => {e.stopPropagation()}}
-                                suffix={<div className='suffixIcon'><IconMore/></div>}>
-                            <Select.Option value="SUM">求和</Select.Option>
-                            <Select.Option value="AVERAGE">平均值</Select.Option>
-                            <Select.Option value="MAX">最大值</Select.Option>
-                            <Select.Option value="MIN">最小值</Select.Option>
-                        </Form.Select>
-                    }
-                    >
-            </Form.Select>
+            { config.currentValueCalcMethod === 'calc' ?
+                <Form.Select field="currentValueAggField" initValue=""  label="选择字段" className='currentValueAggField' showArrow={false}
+                        optionList={ numberFieldList.map(fieldInfo => ({value: fieldInfo.fieldId, label: fieldInfo.fieldName}) )}
+                        prefix={<div className='prefixIcon'><IconFormular/></div>}
+                        suffix={
+                            <Form.Select field="currentValueAggMethod" className='currentValueAggMethod' noLabel={true} showArrow={false}
+                                    initValue="SUM"  onFocus={(e) => {e.stopPropagation()}} dropdownClassName="aggMethodDropdown" position='bottomRight'
+                                    suffix={<div className='suffixIcon'><IconMore/></div>}>
+                                <Select.Option value="SUM">求和</Select.Option>
+                                <Select.Option value="AVERAGE">平均值</Select.Option>
+                                <Select.Option value="MAX">最大值</Select.Option>
+                                <Select.Option value="MIN">最小值</Select.Option>
+                            </Form.Select>
+                        }
+                        >
+                </Form.Select>
+            : undefined }
 
             <Form.InputGroup label={{ text: "单位" }} className='fieldUnit'>
                 <Form.Input field="unitSign" initValue="$" className='unitSymbol'></Form.Input>

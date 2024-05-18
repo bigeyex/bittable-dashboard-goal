@@ -25,7 +25,7 @@ export default () => {
             numberResult = numberResult / 1000
             kiloMark = 'K'
         }
-        let result = number.toLocaleString(undefined, {
+        let result = numberResult.toLocaleString(undefined, {
             maximumFractionDigits: config.numericDigits,
         });
         result = result + kiloMark

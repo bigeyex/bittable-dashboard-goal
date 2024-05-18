@@ -6,6 +6,7 @@ import './semiCircular.scss'
 import { createRef, useEffect, useRef } from "react";
 import ReactECharts from 'echarts-for-react';
 import { isConfigLayout } from "../common";
+import { dashboard } from "@lark-base-open/js-sdk";
 
 
 export default ({currentValueText, targetValueText, color, percentage}:GoalChartProps) => {
@@ -19,8 +20,13 @@ export default ({currentValueText, targetValueText, color, percentage}:GoalChart
         }
       });
 
+    const onRendered = () => {dashboard.setRendered()}
     useEffect(() => {
         chartRef.current?.getEchartsInstance().resize()
+        chartRef.current?.getEchartsInstance().on('rendered', onRendered) // 当图表渲染完毕时，通知多维表格
+        return () => {
+            chartRef.current?.getEchartsInstance().off('rendered', onRendered)
+        }
     }, [])
 
     return <div className={'goalchartSemiCircularContainer' + (isConfigLayout() ? ' config' : '')}>

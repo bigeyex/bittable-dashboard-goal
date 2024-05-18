@@ -12,5 +12,5 @@ export default defineConfig({
     proxy: {
       '/api': 'https://api.apiusb.com/api/app?service=App.NumbersFormula.RandomNumberGenerator&num=8&min=7&max=15'
     }
-  }
+  },
 })
