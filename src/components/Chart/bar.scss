@@ -1,4 +1,4 @@
-/* 1 px = 0.5 vmin */
+/* 1 px = 0.5 vw */
 .goalchartBarContainer {
     display: flex;
     align-items: center;
@@ -6,26 +6,26 @@
     width: 100%;
 }
 
-@mixin goalChartBarMixin($pvmin: 1) {
+@mixin goalChartBarMixin($pvw: 1) {
     .goalchartBar {
-        width: 150vmin * $pvmin;
+        width: 150vw * $pvw;
         display: flex;
         flex-direction: column;
-        gap: 10vmin * $pvmin;
+        gap: 10vw * $pvw;
         
         .textRegion {
             display: flex;
             flex-direction: row;
-            font-size: 13vmin * $pvmin;
+            font-size: 13vw * $pvw;
             font-weight: 600;
 
             .seperatorContainer {
-                width: 10vmin * $pvmin;
+                width: 10vw * $pvw;
                 display: flex;
                 justify-content: center;
 
                 .vSeperator {
-                    width: 1vmin * $pvmin;
+                    width: 1vw * $pvw;
                     background-color: rgba(208, 211, 214, 1);
                 }
             }
@@ -38,21 +38,21 @@
 
         .chartBar {
             background-color: rgba(231, 233, 239, 1);
-            height: 12vmin * $pvmin;
-            border-radius: 3vmin * $pvmin;
+            height: 12vw * $pvw;
+            border-radius: 3vw * $pvw;
 
             .chartBarFilled {
                 height: 100%;
-                border-radius: 3vmin * $pvmin;
+                border-radius: 3vw * $pvw;
             }
         }
     }
 }
 
 .goalchartBarContainer {
-    @include goalChartBarMixin()
+    @include goalChartBarMixin($pvw: 0.55)
 }
 
 .goalchartBarContainer.config {
-    @include goalChartBarMixin($pvmin: 0.8)
+    @include goalChartBarMixin($pvw: 0.3)
 }

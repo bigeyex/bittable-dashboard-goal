@@ -6,9 +6,11 @@ import { useCallback, useEffect } from 'react';
 import { useAppDispatch } from './store/hook';
 import { ConfigPayload, loadConfig } from './store/config';
 import { loadChartData, setCurrentValueFromIData } from './store/chartData';
+import { useTheme } from './components/common';
 
 export default function App() {
   const dispatch = useAppDispatch()
+  useTheme()
 
   const fetchInitData = useCallback(async() => {
     dispatch(loadConfig())

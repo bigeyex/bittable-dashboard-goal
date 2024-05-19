@@ -203,7 +203,7 @@
                 padding: 3px;
 
                 .semi-radio-addon-buttonRadio {
-                    width: 26px;
+                    width: 34px;
                     color: rgba(31, 35, 41, 1);
                 }
 
@@ -241,6 +241,25 @@
         color: rgba(20, 86, 240, 1);
         font-weight: 400;
     }
+}
+
+body[theme-mode="dark"] {
+   .configForm.semi-form {
+        .fieldUnit {
+            .unitPosition {
+                border: 1px solid rgba(80, 80, 80, 1);
+                .semi-radio {
+                    .semi-radio-addon-buttonRadio{
+                        color: rgba(235, 235, 235, 1);
+                    }
+                    .semi-radio-addon-buttonRadio-checked {
+                        background-color: rgba(76, 136, 255, 0.2);
+                        color: rgba(80, 131, 251, 1);
+                    }
+                }
+            }
+        }
+   } 
 }
 
 /* fix broken semi dsm */

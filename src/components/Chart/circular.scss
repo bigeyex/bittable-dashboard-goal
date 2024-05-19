@@ -8,26 +8,26 @@
     overflow: hidden;
 }
 
-@mixin circleMixin($pvmin: 1) {
+@mixin circleMixin($pvw: 1) {
     .circle {
         display: flex;
         flex-direction: row;
-        gap: 10vmin * $pvmin;
+        gap: 10vw * $pvw;
         justify-content: center;
         align-items: center;
 
         .detailNumbers {
-            font-size: 13vmin * $pvmin;
+            font-size: 13vw * $pvw;
             font-weight: 600;
             display: flex;
 
             .seperatorContainer {
-                width: 10vmin * $pvmin;
+                width: 10vw * $pvw;
                 display: flex;
                 justify-content: center;
 
                 .vSeperator {
-                    width: 1vmin * $pvmin;
+                    width: 1vw * $pvw;
                     background-color: rgba(208, 211, 214, 1);
                 }
             }
@@ -38,8 +38,8 @@
             justify-content: center;
             align-items: center;
             display: flex;
-            width: 50vmin * $pvmin;
-            height: 50vmin * $pvmin;
+            width: 50vw * $pvw;
+            height: 50vw * $pvw;
             
             .circularPart {
                 position: absolute;
@@ -48,7 +48,7 @@
             }
 
             .percentage {
-                font-size: 13vmin * $pvmin;
+                font-size: 13vw * $pvw;
                 font-weight: 900;
             }
         }
@@ -57,9 +57,9 @@
 }
 
 .goalchartCircularContainer {
-    @include circleMixin()
+    @include circleMixin($pvw: 0.55)
 }
 
 .goalchartCircularContainer.config {
-    @include circleMixin($pvmin: 0.8)
+    @include circleMixin($pvw: 0.3)
 }
