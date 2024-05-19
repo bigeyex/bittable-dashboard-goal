@@ -12,14 +12,36 @@ body {
     background: transparent !important;
     background-image: none !important;
 }
-  
+
+body[theme-mode="dark"] {
+  .goal-chart {
+    color: rgb(235, 235, 235);
+  }
+
+  .goal-app {
+    border-top: 0.5px solid rgba(207, 207, 207, 0.15);
+  }
+
+  .config-panel {
+    border-left: 0.5px solid rgba(207, 207, 207, 0.15);
+  }
+
+  .semi-divider {
+    border-bottom: 0.5px solid rgba(207, 207, 207, 0.15);
+  }
+}
+
+.semi-divider {
+  border-bottom: 0.5px solid rgba(31, 35, 41, 0.15);
+}
+
 .goal-app {
     height: 100vh;
     display: flex;
     flex-direction: row;
     box-sizing: border-box;
-    border-top: 1px solid #dee0e3;
-  }
+    border-top: 0.5px solid rgba(31, 35, 41, 0.15);
+}
   
 @font-face {
   font-family: 'Roboto';
@@ -38,11 +60,6 @@ body {
   src: url(./assets/fonts/roboto-900.woff2) format('woff2');
 }
 
-body[theme-mode="dark"] {
-  .goal-chart {
-    color: rgb(235, 235, 235);
-  }
-}
 
 .goal-chart {
   box-sizing: border-box;
@@ -57,7 +74,7 @@ body[theme-mode="dark"] {
   width: 340px;
   overflow: auto;
   /* justify-content:flex-start; */
-  border-left: 1px solid #dee0e3;
+  border-left: 0.5px solid rgba(31, 35, 41, 0.15);
   position: relative;
   /* width: 350px; */
 }
