@@ -35,6 +35,9 @@
         "react-resize-detector": "^10.0.1",
         "vite-plugin-semi-theme": "^0.5.0",
         "vite-plugin-semi-theming": "^0.1.0",
-        "vite-plugin-svgr": "^4.2.0"
+        "vite-plugin-svgr": "^4.2.0",
+        "i18next": "^23.5.1",
+        "i18next-browser-languagedetector": "^7.1.0",
+        "react-i18next": "^13.2.2"
     }
 }

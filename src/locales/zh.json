@@ -1,0 +1,33 @@
+{
+  "dataSource": "数据源",
+  "dataRange": "数据范围",
+  "dataRangeAll": "全部数据",
+
+  "chartShape": "图表形状",
+  "chartShapeBar": "条形",
+  "chartShapeSemiCircle": "半环",
+  "chartShapeCircle": "环形",
+
+  "color": "颜色",
+
+  "targetValue": "目标值",
+  "currentValue": "当前值",
+  "countRecords": "统计字段总数",
+  "aggrValue": "统计字段数值",
+  "selectField": "选择字段",
+  "sum": "求和",
+  "average": "平均值",
+  "max": "最大值",
+  "min": "最小值",
+
+  "unit": "单位",
+  "left": "左",
+  "right": "右",
+  "format": "格式",
+  "integer": "整数",
+  "keepOneDigit": "保留1位小数",
+  "keepTwoDigit": "保留2位小数",
+  "abbrPerKilo": "千位缩写",
+
+  "confirm": "确定"
+}

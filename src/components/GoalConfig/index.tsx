@@ -9,6 +9,7 @@ import './style.scss'
 import config, { ConfigPayload, ConfigState, loadConfig, saveConfig, setConfigState, updatePreviewData } from '../../store/config';
 import { useAppDispatch, useAppSelector } from '../../store/hook';
 import { themeColors } from '../common';
+import { T } from '../../locales/i18n';
 
 export default () => {
     type TableInfo = {tableId: string, tableName: string}
@@ -104,21 +105,21 @@ export default () => {
                 }}
                 onSubmit={(formData) => dispatch(saveConfig(formData as ConfigPayload))}>
         <div className='configFields'>
-            <Form.Select field="dataSource" label="数据源" placeholder="请选择数据源" 
+            <Form.Select field="dataSource" label={T("dataSource")}
                 onChange={value => {onDataSourceChange(value as string)}}
                 optionList={tableList.map(source => ({
                     value: source.tableId,
                     label: source.tableName
                 }))} ></Form.Select>
 
-            <Form.Select field="dataRange" label="数据范围" placeholder="请选择数据范围" 
+            <Form.Select field="dataRange" label={T("dataRange")}
                     // onChange={handleDataRangeChange}
                     optionList={tableDataRange.map(range => {
                     const { type } = range;
                     if (type === SourceType.ALL) {
                         return {
                         value: JSON.stringify(range),
-                        label: '全部数据'
+                        label: T('dataRangeAll')
                         }
                     } else {
                         return {
@@ -128,22 +129,22 @@ export default () => {
                     }
                     })}></Form.Select>
 
-            <Form.RadioGroup field="chartType" label="图表形状" type='pureCard' direction='horizontal' className='chartTypePicker' initValue="bar">
+            <Form.RadioGroup field="chartType" label={T("chartShape")} type='pureCard' direction='horizontal' className='chartTypePicker' initValue="bar">
                 <Form.Radio value="bar">
                     <div className='iconFrame bar'></div>
-                    <div className='chartTypeLabel'>条形</div>
+                    <div className='chartTypeLabel'>{T("chartShapeBar")}</div>
                 </Form.Radio>
                 <Form.Radio value="semiCircular">
                     <div className='iconFrame semiCircular'></div>
-                    <div className='chartTypeLabel'>半环</div>
+                    <div className='chartTypeLabel'>{T("chartShapeSemiCircle")}</div>
                 </Form.Radio>
                 <Form.Radio value="circular">
                     <div className='iconFrame circular'></div>
-                    <div className='chartTypeLabel'>环形</div>
+                    <div className='chartTypeLabel'>{T("chartShapeCircle")}</div>
                 </Form.Radio>
             </Form.RadioGroup>
 
-            <Form.RadioGroup field="color" label="颜色" initValue='rgba(53, 189, 75, 1)' type='pureCard' direction='horizontal' className='colorPicker'> 
+            <Form.RadioGroup field="color" label={T("color")} initValue='rgba(53, 189, 75, 1)' type='pureCard' direction='horizontal' className='colorPicker'> 
                 {
                     themeColors.map((color) => {
                         return <Form.Radio key={color} value={color} style={{borderColor: color}}>
@@ -155,26 +156,26 @@ export default () => {
 
             <Divider/>
 
-            <Form.Input field="targetValue" label="目标值" initValue={100}></Form.Input>
+            <Form.Input field="targetValue" label={T("targetValue")} initValue={100}></Form.Input>
 
-            <Form.Select field="currentValueCalcMethod" label="当前值" initValue="count">
-                <Select.Option value="count">统计字段总数</Select.Option>
-                <Select.Option value="calc">统计字段数值</Select.Option>
+            <Form.Select field="currentValueCalcMethod" label={T("currentValue")} initValue="count">
+                <Select.Option value="count">{T("countRecords")}</Select.Option>
+                <Select.Option value="calc">{T("aggrValue")}</Select.Option>
             </Form.Select>
 
                 
 
-            <Form.Select field="currentValueAggField" initValue=""  label="选择字段" className='currentValueAggField' showArrow={false}
+            <Form.Select field="currentValueAggField" initValue=""  label={T("selectField")} className='currentValueAggField' showArrow={false}
                     optionList={ numberFieldList.map(fieldInfo => ({value: fieldInfo.fieldId, label: fieldInfo.fieldName}) )}
                     prefix={<div className='prefixIcon'><IconFormular/></div>}
                     suffix={
                         <Form.Select field="currentValueAggMethod" className='currentValueAggMethod' noLabel={true} showArrow={false}
                                 initValue="SUM"  onFocus={(e) => {e.stopPropagation()}} dropdownClassName="aggMethodDropdown" position='bottomRight'
                                 suffix={<div className='suffixIcon'><IconMore/></div>}>
-                            <Select.Option value="SUM">求和</Select.Option>
-                            <Select.Option value="AVERAGE">平均值</Select.Option>
-                            <Select.Option value="MAX">最大值</Select.Option>
-                            <Select.Option value="MIN">最小值</Select.Option>
+                            <Select.Option value="SUM">{T("sum")}</Select.Option>
+                            <Select.Option value="AVERAGE">{T("average")}</Select.Option>
+                            <Select.Option value="MAX">{T("max")}</Select.Option>
+                            <Select.Option value="MIN">{T("min")}</Select.Option>
                         </Form.Select>
                     }
                     fieldStyle={config.currentValueCalcMethod === 'calc' ? {} : {display: 'none'}}
@@ -182,27 +183,27 @@ export default () => {
             </Form.Select>
 
 
-            <Form.InputGroup label={{ text: "单位" }} className='fieldUnit'>
+            <Form.InputGroup label={{ text: T("unit") }} className='fieldUnit'>
                 <Form.Input field="unitSign" initValue="$" className='unitSymbol'></Form.Input>
                 <Form.RadioGroup type="button" field="unitPosition" initValue="left" className="unitPosition">
-                    <Form.Radio value="left">左</Form.Radio>
-                    <Form.Radio value="right">右</Form.Radio>
+                    <Form.Radio value="left">{T("left")}</Form.Radio>
+                    <Form.Radio value="right">{T("right")}</Form.Radio>
                 </Form.RadioGroup>
             </Form.InputGroup>
 
-            <Form.InputGroup label={{ text: "格式" }} className='fieldNumericFormat'>
+            <Form.InputGroup label={{ text: T("format") }} className='fieldNumericFormat'>
                 <Form.Select field="numericDigits" initValue={0}>
-                    <Select.Option value={0}>整数</Select.Option>
-                    <Select.Option value={1}>保留1位小数</Select.Option>
-                    <Select.Option value={2}>保留2位小数</Select.Option>
+                    <Select.Option value={0}>{T("integer")}</Select.Option>
+                    <Select.Option value={1}>{T("keepOneDigit")}</Select.Option>
+                    <Select.Option value={2}>{T("keepTwoDigit")}</Select.Option>
                 </Form.Select>
-                <Form.Checkbox field="numericAbbrKilos" initValue={false}>千位缩写</Form.Checkbox>
+                <Form.Checkbox field="numericAbbrKilos" initValue={false}>{T("abbrPerKilo")}</Form.Checkbox>
 
             </Form.InputGroup>
 
         </div>
         <div className='configActions'>
-            <Button theme='solid' type="primary" htmlType="submit" className="btn-margin-right">确定</Button>
+            <Button theme='solid' type="primary" htmlType="submit" className="btn-margin-right">{T('confirm')}</Button>
         </div>
         
         <DefaultValueSetter/>
