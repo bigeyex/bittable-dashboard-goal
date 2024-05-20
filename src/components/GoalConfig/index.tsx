@@ -4,7 +4,7 @@ import { Form, Button, Divider, Select, useFieldApi, useFormApi } from '@douyinf
 import IconFormular from '/src/assets/icons/icon-formular.svg?react'
 import IconMore from '/src/assets/icons/icon-more.svg?react'
 import { DashboardState, bitable, dashboard } from "@lark-base-open/js-sdk";
-import '../../assets/semi-feishu-custom.min.css'
+// import '../../assets/semi-feishu-custom.min.css'
 import './style.scss'
 import config, { ConfigPayload, ConfigState, loadConfig, saveConfig, setConfigState, updatePreviewData } from '../../store/config';
 import { useAppDispatch, useAppSelector } from '../../store/hook';
@@ -128,7 +128,7 @@ export default () => {
                     }
                     })}></Form.Select>
 
-            <Form.RadioGroup field="chartType" label="图表形状" type='pureCard' direction='horizontal' className='chartTypePicker'>
+            <Form.RadioGroup field="chartType" label="图表形状" type='pureCard' direction='horizontal' className='chartTypePicker' initValue="bar">
                 <Form.Radio value="bar">
                     <div className='iconFrame bar'></div>
                     <div className='chartTypeLabel'>条形</div>
@@ -163,23 +163,24 @@ export default () => {
             </Form.Select>
 
                 
-            { config.currentValueCalcMethod === 'calc' ?
-                <Form.Select field="currentValueAggField" initValue=""  label="选择字段" className='currentValueAggField' showArrow={false}
-                        optionList={ numberFieldList.map(fieldInfo => ({value: fieldInfo.fieldId, label: fieldInfo.fieldName}) )}
-                        prefix={<div className='prefixIcon'><IconFormular/></div>}
-                        suffix={
-                            <Form.Select field="currentValueAggMethod" className='currentValueAggMethod' noLabel={true} showArrow={false}
-                                    initValue="SUM"  onFocus={(e) => {e.stopPropagation()}} dropdownClassName="aggMethodDropdown" position='bottomRight'
-                                    suffix={<div className='suffixIcon'><IconMore/></div>}>
-                                <Select.Option value="SUM">求和</Select.Option>
-                                <Select.Option value="AVERAGE">平均值</Select.Option>
-                                <Select.Option value="MAX">最大值</Select.Option>
-                                <Select.Option value="MIN">最小值</Select.Option>
-                            </Form.Select>
-                        }
-                        >
-                </Form.Select>
-            : undefined }
+
+            <Form.Select field="currentValueAggField" initValue=""  label="选择字段" className='currentValueAggField' showArrow={false}
+                    optionList={ numberFieldList.map(fieldInfo => ({value: fieldInfo.fieldId, label: fieldInfo.fieldName}) )}
+                    prefix={<div className='prefixIcon'><IconFormular/></div>}
+                    suffix={
+                        <Form.Select field="currentValueAggMethod" className='currentValueAggMethod' noLabel={true} showArrow={false}
+                                initValue="SUM"  onFocus={(e) => {e.stopPropagation()}} dropdownClassName="aggMethodDropdown" position='bottomRight'
+                                suffix={<div className='suffixIcon'><IconMore/></div>}>
+                            <Select.Option value="SUM">求和</Select.Option>
+                            <Select.Option value="AVERAGE">平均值</Select.Option>
+                            <Select.Option value="MAX">最大值</Select.Option>
+                            <Select.Option value="MIN">最小值</Select.Option>
+                        </Form.Select>
+                    }
+                    fieldStyle={config.currentValueCalcMethod === 'calc' ? {} : {display: 'none'}}
+                    >
+            </Form.Select>
+
 
             <Form.InputGroup label={{ text: "单位" }} className='fieldUnit'>
                 <Form.Input field="unitSign" initValue="$" className='unitSymbol'></Form.Input>

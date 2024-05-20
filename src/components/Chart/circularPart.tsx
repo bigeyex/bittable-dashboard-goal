@@ -43,7 +43,7 @@ import React, { forwardRef, useCallback, useRef } from 'react';
 
 
 const greyColor = "rgba(231, 233, 239, 1)"
-const makeCircularSeriesConfig = (color:string, startAngle:number, endAngle:number, borderRadius='3vmin') => ({
+const makeCircularSeriesConfig = (color:string, startAngle:number, endAngle:number, borderRadius='8vmin') => ({
     color: [
         color,
     ],
@@ -73,7 +73,7 @@ export const SemiCircularPart = forwardRef<ReactECharts, CircularPartProps>(({co
         series: [
           makeCircularSeriesConfig(greyColor, 180, 0),
           makeCircularSeriesConfig(color, 180, Math.round(180-180*percentage/100)),
-        ]
+        ], 
     }
     return <ReactECharts ref={ref} option={option} className={className} opts={{renderer: 'svg'}}/>
 })

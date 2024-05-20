@@ -14,7 +14,7 @@ export default ({currentValueText, targetValueText, color, percentage}:GoalChart
 
     const { width, height, ref } = useResizeDetector({
         refreshMode: 'debounce',
-        refreshRate: 1000,
+        refreshRate: 10,
         onResize: () => {
             chartRef.current?.getEchartsInstance().resize({width: width, height: height!*2})
         }

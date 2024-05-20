@@ -245,6 +245,40 @@
 
 body[theme-mode="dark"] {
    .configForm.semi-form {
+        .chartTypePicker {
+            .semi-radio {
+                border: 1px solid #505050;
+                .iconFrame {
+                    background-color: #121212;
+                }
+                .iconFrame.bar {
+                    background-image: url(/src/assets/icons/icon-charttype-bar-dark.svg);
+                }
+                .iconFrame.semiCircular {
+                    background-image: url(/src/assets/icons/icon-charttype-semicircular-dark.svg);
+                }
+                .iconFrame.circular {
+                    background-image: url(/src/assets/icons/icon-charttype-circular-dark.svg);
+                }
+                .chartTypeLabel {
+                    color: #646A73;
+                }
+            }
+            .semi-radio-checked {
+                .iconFrame.bar {
+                    background-image: url(/src/assets/icons/icon-charttype-bar-selected-dark.svg);
+                }
+                .iconFrame.semiCircular {
+                    background-image: url(/src/assets/icons/icon-charttype-semicircular-selected-dark.svg);
+                }
+                .iconFrame.circular {
+                    background-image: url(/src/assets/icons/icon-charttype-circular-selected-dark.svg);
+                }
+                .chartTypeLabel {
+                    color: #1456F0;
+                }
+            }
+        }
         .fieldUnit {
             .unitPosition {
                 border: 1px solid rgba(80, 80, 80, 1);
