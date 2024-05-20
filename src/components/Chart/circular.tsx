@@ -5,7 +5,7 @@ import { useResizeDetector } from 'react-resize-detector';
 import './circular.scss'
 import { createRef, useEffect, useRef } from "react";
 import ReactECharts from 'echarts-for-react';
-import { isConfigLayout } from "../common";
+import { getLongTextClass, isConfigLayout } from "../common";
 import { dashboard } from "@lark-base-open/js-sdk";
 
 
@@ -31,7 +31,7 @@ export default ({currentValueText, targetValueText, color, percentage}:GoalChart
 
     return <div className={'goalchartCircularContainer' + (isConfigLayout() ? ' config' : '')}>
         <div className="circle">
-            <div className="detailNumbers">
+            <div className={"detailNumbers" + getLongTextClass(currentValueText, targetValueText, percentage, 23)}>
                 <div className="currentValue" style={{color: `${color}`}}>{currentValueText}</div>
                 <div className="seperatorContainer">
                     <div className="vSeperator"></div>

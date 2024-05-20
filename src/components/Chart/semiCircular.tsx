@@ -5,7 +5,7 @@ import { useResizeDetector } from 'react-resize-detector';
 import './semiCircular.scss'
 import { createRef, useEffect, useRef } from "react";
 import ReactECharts from 'echarts-for-react';
-import { isConfigLayout } from "../common";
+import { getLongTextClass, isConfigLayout } from "../common";
 import { dashboard } from "@lark-base-open/js-sdk";
 
 
@@ -33,7 +33,7 @@ export default ({currentValueText, targetValueText, color, percentage}:GoalChart
         <div className="semiCircle">
             <div className="textRegion">
                 <div className="percentage">{percentage}%</div>
-                <div className="detailNumbers">
+                <div className={"detailNumbers" + getLongTextClass(currentValueText, targetValueText, percentage, 16)}>
                     <div className="currentValue" style={{color: `${color}`}}>{currentValueText}</div>
                     <div className="seperatorContainer">
                         <div className="vSeperator"></div>

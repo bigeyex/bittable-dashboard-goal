@@ -17,6 +17,12 @@
             display: flex;
             flex-direction: row;
             font-size: 13vw * $pvw;
+            &.longText {
+                font-size: 13vw * $pvw * 0.7;
+            }
+            &.longLongText {
+                font-size: 13vw * $pvw * 0.55;
+            }
             font-weight: 600;
 
             .seperatorContainer {

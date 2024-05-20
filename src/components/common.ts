@@ -10,13 +10,25 @@ export const themeColors = [
     'rgba(255, 129, 26, 1)', 'rgba(245, 74, 69, 1)'
 ]
 
+export const getLongTextClass = (currentValueText:string, targetValueText:string, percentage:number, firstThreshold=19, secondThreshold=28) => {
+  const fullTextLength = currentValueText.length + targetValueText.length + `${percentage}%`.length
+    let longTextClass = ''
+    if (fullTextLength > secondThreshold) {
+        longTextClass = ' longLongText'
+    }
+    else if (fullTextLength > firstThreshold) {
+        longTextClass = ' longText'
+    }
+    return longTextClass
+}
+
 import { useLayoutEffect } from "react";
 
 function updateTheme(theme: string) {
   document.body.setAttribute('theme-mode', theme);
 }
 
-/** 跟随主题色变化 */
+/** following dark mode theme */
 export function useTheme() {
   useLayoutEffect(() => {
     bitable.bridge.getTheme().then((theme: string) => {

@@ -41,6 +41,13 @@
                 display: flex;
                 flex-direction: row;
                 font-size: 10vmin * $pvmin;
+                &.longText {
+                    font-size: 10vmin * $pvmin * 0.7;
+                    margin-top: 6vmin * $pvmin;
+                }
+                &.longLongText {
+                    font-size: 10vmin * $pvmin * 0.55;
+                }
                 font-weight: 600;
                 margin-top: 3vmin * $pvmin;
 
