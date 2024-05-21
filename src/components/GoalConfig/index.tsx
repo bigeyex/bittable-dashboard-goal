@@ -67,6 +67,8 @@ export default () => {
             ...await table.getFieldListByType(FieldType.Currency),
             ...await table.getFieldListByType(FieldType.Formula),
             ...await table.getFieldListByType(FieldType.Lookup),
+            ...await table.getFieldListByType(FieldType.Progress),
+            ...await table.getFieldListByType(FieldType.Rating),
         ]
         const numberFieldsInfo =  await Promise.all(numberFields.map(async field => {
             const name = await field.getName();
