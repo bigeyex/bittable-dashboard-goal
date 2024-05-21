@@ -57,8 +57,11 @@
                     justify-content: center;
 
                     .vSeperator {
-                        width: 1vmin * $pvmin;
+                        width: 1px;
                         background-color: rgba(208, 211, 214, 1);
+                        body[theme-mode="dark"] & {
+                            background-color: rgba(207, 207, 207, 0.15);
+                        }
                     }
                 }
             }

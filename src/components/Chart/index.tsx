@@ -1,4 +1,5 @@
 import { useAppSelector } from "../../store/hook"
+import { darkModeThemeColor } from "../common";
 import Bar from './bar'
 import Circular from "./circular";
 import SemiCircular from './semiCircular'
@@ -45,7 +46,7 @@ export default () => {
     const props:GoalChartProps = {
         currentValueText: formatNumber(currentValue),
         targetValueText: formatNumber(Number(config.targetValue)),
-        color: config.color,
+        color: darkModeThemeColor(config.color),
         percentage: percentage
     }
 

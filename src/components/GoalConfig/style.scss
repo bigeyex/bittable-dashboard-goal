@@ -1,3 +1,18 @@
+::-webkit-scrollbar {
+    width: 8px;
+
+}
+
+::-webkit-scrollbar-track {
+    background-color: transparent;
+    display: none;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgb(194,194,194);
+    border-radius: 8px;
+  }
+
 .configForm.semi-form {
     width: 100%;
     overflow: auto;
@@ -28,7 +43,7 @@
     }
 
     .semi-form-field-label-text {
-        font-weight: bold;
+        font-weight: normal;
     }
 
     .semi-select {
@@ -37,6 +52,7 @@
 
     .semi-form-field {
         padding: 10px 0;
+        overflow: visible;
     }
 
     .chartTypePicker {
@@ -136,6 +152,8 @@
 
         .semi-radio-checked {
             border-width: 2px;
+            margin-left: -2px;
+            margin-right: -2px;
 
             .swatch {
                 background-image: url(/src/assets/icons/icon-colorpicker-checked.svg);
@@ -144,6 +162,10 @@
             }
         }
         
+    }
+
+    .semi-divider{
+        margin: 6px 0;
     }
     
     .currentValueAggField {
@@ -196,6 +218,7 @@
 
         .unitPosition {
             height: 30px;
+            border-radius: 6px;
             border: 1px solid rgba(222, 224, 227, 1);
             flex: 1;
             display: flex;
@@ -266,6 +289,10 @@ body[theme-mode="dark"] {
                 }
             }
             .semi-radio-checked {
+                border: 1px solid #5083FB;
+                .iconFrame {
+                    background-color: #152340;
+                }
                 .iconFrame.bar {
                     background-image: url(/src/assets/icons/icon-charttype-bar-selected-dark.svg);
                 }
@@ -301,7 +328,7 @@ body[theme-mode="dark"] {
 .semi-input-group .semi-select:first-child,
 .semi-input-group .semi-select:last-child,
 .semi-input-group>.semi-input-wrapper:first-child {
-    border-radius: 4px;
+    border-radius: 6px;
 }
 
 .semi-input-group>.semi-input-wrapper:not(:last-child)::after,

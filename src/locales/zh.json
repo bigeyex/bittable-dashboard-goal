@@ -25,8 +25,8 @@
   "right": "右",
   "format": "格式",
   "integer": "整数",
-  "keepOneDigit": "保留1位小数",
-  "keepTwoDigit": "保留2位小数",
+  "keepOneDigit": "保留 1 位小数",
+  "keepTwoDigit": "保留 2 位小数",
   "abbrPerKilo": "千位缩写",
 
   "confirm": "确定"

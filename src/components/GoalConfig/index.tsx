@@ -8,7 +8,7 @@ import { DashboardState, bitable, dashboard } from "@lark-base-open/js-sdk";
 import './style.scss'
 import config, { ConfigPayload, ConfigState, loadConfig, saveConfig, setConfigState, updatePreviewData } from '../../store/config';
 import { useAppDispatch, useAppSelector } from '../../store/hook';
-import { themeColors } from '../common';
+import { darkModeThemeColor, themeColors } from '../common';
 import { T } from '../../locales/i18n';
 
 export default () => {
@@ -62,9 +62,13 @@ export default () => {
         const dataRange = await getTableRange(tableId)
         setTableDataRange(dataRange)
         const table = await base.getTableById(tableId)
-        const numberFields = await table.getFieldListByType(FieldType.Number)
-        const currencyFields = await table.getFieldListByType(FieldType.Currency)
-        const numberFieldsInfo =  await Promise.all([...numberFields, ...currencyFields].map(async field => {
+        const numberFields = [
+            ...await table.getFieldListByType(FieldType.Number),
+            ...await table.getFieldListByType(FieldType.Currency),
+            ...await table.getFieldListByType(FieldType.Formula),
+            ...await table.getFieldListByType(FieldType.Lookup),
+        ]
+        const numberFieldsInfo =  await Promise.all(numberFields.map(async field => {
             const name = await field.getName();
             return {
                 fieldId: field.id,
@@ -148,8 +152,8 @@ export default () => {
             <Form.RadioGroup field="color" label={T("color")} initValue='rgba(53, 189, 75, 1)' type='pureCard' direction='horizontal' className='colorPicker'> 
                 {
                     themeColors.map((color) => {
-                        return <Form.Radio key={color} value={color} style={{borderColor: color}}>
-                            <div className='swatch' style={{backgroundColor: color}}></div>
+                        return <Form.Radio key={color} value={color} style={{borderColor: darkModeThemeColor(color)}}>
+                            <div className='swatch' style={{backgroundColor: darkModeThemeColor(color)}}></div>
                         </Form.Radio>
                     })
                 }

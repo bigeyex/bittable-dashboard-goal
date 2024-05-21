@@ -40,9 +40,10 @@ type ECOption = ComposeOption<
 import ReactECharts from 'echarts-for-react';
 import { UseResizeDetectorReturn, useResizeDetector } from 'react-resize-detector';
 import React, { forwardRef, useCallback, useRef } from 'react';
+import { isDarkMode } from '../common';
 
 
-const greyColor = "rgba(231, 233, 239, 1)"
+const greyColor = () => isDarkMode ? "rgba(235, 235, 235, 0.1)" : "rgba(231, 233, 239, 1)"
 const makeCircularSeriesConfig = (color:string, startAngle:number, endAngle:number, borderRadius='8vmin') => ({
     color: [
         color,
@@ -71,7 +72,7 @@ type CircularPartProps = {color:string, percentage:number, className?:string}
 export const SemiCircularPart = forwardRef<ReactECharts, CircularPartProps>(({color, percentage, className}, ref) => {
     const option = {
         series: [
-          makeCircularSeriesConfig(greyColor, 180, 0),
+          makeCircularSeriesConfig(greyColor(), 180, 0),
           makeCircularSeriesConfig(color, 180, Math.round(180-180*percentage/100)),
         ], 
     }
@@ -81,7 +82,7 @@ export const SemiCircularPart = forwardRef<ReactECharts, CircularPartProps>(({co
 export const CircularPart = forwardRef<ReactECharts, CircularPartProps>(({color, percentage, className}, ref) => {
     const option = {
         series: [
-            makeCircularSeriesConfig(greyColor, 180, -180, '6vmin'),
+            makeCircularSeriesConfig(greyColor(), 180, -180, '6vmin'),
             makeCircularSeriesConfig(color, 180, Math.round(180-360*percentage/100), '6vmin'),
           ]
     }

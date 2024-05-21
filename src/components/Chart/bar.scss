@@ -31,8 +31,11 @@
                 justify-content: center;
 
                 .vSeperator {
-                    width: 1vw * $pvw;
+                    width: 1px;
                     background-color: rgba(208, 211, 214, 1);
+                    body[theme-mode="dark"] & {
+                        background-color: rgba(207, 207, 207, 0.15);
+                    }
                 }
             }
 
@@ -44,6 +47,9 @@
 
         .chartBar {
             background-color: rgba(231, 233, 239, 1);
+            body[theme-mode="dark"] & {
+                background-color: rgba(235, 235, 235, 0.1);
+            }
             height: 12vw * $pvw;
             border-radius: 3vw * $pvw;
 
