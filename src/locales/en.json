@@ -1,86 +1,28 @@
 {
-  "modules": {
-    "descriptive": "Descriptive Statistics",
-    "crosstabs": "CrossTabs / Pivot Table",
-    "correlation": "Correlation",
-    "regression": "Regression",
-    "hypotest": "Hypothesis Test"
-  },
-
-  "methods": "Method",
-  "fields": "Fields",
-
-  "correlation": {
-    "pearson": "Pearson (Interval Variable)",
-    "spearman": "Spearman's Rho (Interval or Ordinal)",
-    "kendall": "Kendall's Tau (Interval or Ordinal)",
-    "pnote": "* for p<0.05; ** for p<0.01"
-  },
-
-  "descriptive": {
-    "missing": "Missing",
-    "avg": "Avg",
-    "sd": "SD",
-    "min": "Min",
-    "quantile25": "25% Percentile",
-    "median": "Median",
-    "quantile75": "75% Percentile",
-    "max": "Max"
-  },
-
-  "hypothesis": {
-    "chisquared": "Chi-Squared Test (Categorical-Categorical)",
-    "oneSampleT": "One-sample T Test (Numerical-Fixed Number)",
-    "independentSampleT": "Independent-sample T Test (Numeric-Numeric)",
-    "pairedSampleT": "Paired-sample T Test (Numeric-Numeric)",
-    "oneWayAnova": "F Test/One-Way ANOVA (Numeric-Categorical)",
-
-    "field1": "Field 1",
-    "field2": "Field 2",
-    "numericField": "Numeric Field",
-    "numberToTest": "Fixed Number to Test Against",
-    "independentVairableNumeric": "Dependent Variable (Numeric)",
-    "categoricalField": "Categorical Field",
-    
-    "selectTestType": "Select Test Type",
-    "testType": "Test Type",
-
-    "chisquaredValue": "Chi-Squared",
-    "statvalue": "Value",
-    "dof": "Degrees of Freedom",
-    "oneSided": "One-sided",
-    "twoSided": "Two-sided"
-  },
-
-  "crosstabs": {
-    "rowfield": "Row Field",
-    "colfield": "Column Field",
-    "aggmethod": "Aggregation Method",
-    "selectaggmethod": "Select Aggregation Method",
-    "valuefield": "Value Field",
-    "totals": "Totals",
-
-    "count": "Count",
-    "countFractionRow": "Count - % of Rows",
-    "countFractionCol": "Count - % of Columns",
-    "countFractionTotal": "Count - % of Total",
-
-    "countUnique": "Count Unique Values",
-    
-    "sum": "Sum",
-    "sumFractionRow": "Sum - % of Rows",
-    "sumFractionCol": "Sum - % of Columns",
-    "sumFractionTotal": "Sum - % of Total",
-
-    "average": "Average",
-    "median": "Median",
-    "minimum": "Minimum Value",
-    "maximum": "Maximum Value"
-
-  },
-  "pleaseSelectField": "Select Field",
-  "dependentVariableY": "Dependent Variable (Y)",
-  "independentVariableX": "Independent Variable (X)",
-  "run": "Run",
-  "calculating": "Calculating..."
+  "dataSource": "Data source",
+  "dataRange": "Data range",
+  "dataRangeAll": "All data",
+  "chartShape": "Chart shape",
+  "chartShapeBar": "Bar",
+  "chartShapeSemiCircle": "Semi-circle",
+  "chartShapeCircle": "Circle",
+  "color": "Color",
+  "targetValue": "Target value",
+  "currentValue": "Current value",
+  "countRecords": "Count of records",
+  "aggrValue": "Aggregate value",
+  "selectField": "Select field",
+  "sum": "Sum",
+  "average": "Average",
+  "max": "Maximum",
+  "min": "Minimum",
+  "unit": "Unit",
+  "left": "Left",
+  "right": "Right",
+  "format": "Format",
+  "integer": "Integer",
+  "keepOneDigit": "Keep one decimal",
+  "keepTwoDigit": "Keep two decimals",
+  "abbrPerKilo": "Abbreviation per kilo",
+  "confirm": "Confirm"
 }
