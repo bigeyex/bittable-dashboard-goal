@@ -44,7 +44,7 @@
 
         .semi-radio {
             width: 86px;
-            height: 96px;
+            min-height: 96px;
             padding: 6px;
             border-radius: 8px;
             border: 1px solid #DEE0E3;
@@ -52,6 +52,7 @@
 
             .semi-radio-content {
                 flex: 1;
+                text-align: center;
             }
 
             .semi-radio-addon {

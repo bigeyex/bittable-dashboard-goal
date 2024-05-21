@@ -24,6 +24,11 @@ export default function App() {
       dashboard.onConfigChange(e => {
         dispatch(loadConfig())
       })
+
+      setTimeout(() => {
+        // 预留3s给浏览器进行渲染，3s后告知服务端可以进行截图了
+        dashboard.setRendered();
+    }, 2000);
     }  
     dashboard.onDataChange(e => {
       dispatch(setCurrentValueFromIData(e.data))

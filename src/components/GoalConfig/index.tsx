@@ -63,7 +63,8 @@ export default () => {
         setTableDataRange(dataRange)
         const table = await base.getTableById(tableId)
         const numberFields = await table.getFieldListByType(FieldType.Number)
-        const numberFieldsInfo =  await Promise.all(numberFields.map(async field => {
+        const currencyFields = await table.getFieldListByType(FieldType.Currency)
+        const numberFieldsInfo =  await Promise.all([...numberFields, ...currencyFields].map(async field => {
             const name = await field.getName();
             return {
                 fieldId: field.id,
@@ -156,7 +157,7 @@ export default () => {
 
             <Divider/>
 
-            <Form.Input field="targetValue" label={T("targetValue")} initValue={100}></Form.Input>
+            <Form.Input field="targetValue" type="number" label={T("targetValue")} initValue={100}></Form.Input>
 
             <Form.Select field="currentValueCalcMethod" label={T("currentValue")} initValue="count">
                 <Select.Option value="count">{T("countRecords")}</Select.Option>
