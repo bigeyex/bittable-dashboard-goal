@@ -44,7 +44,7 @@ import { isDarkMode } from '../common';
 
 
 const greyColor = () => isDarkMode ? "rgba(235, 235, 235, 0.1)" : "rgba(231, 233, 239, 1)"
-const makeCircularSeriesConfig = (color:string, startAngle:number, endAngle:number, borderRadius='8vmin') => ({
+const makeCircularSeriesConfig = (color:string, startAngle:number, endAngle:number, borderRadius='30vmin') => ({
     color: [
         color,
     ],
@@ -82,8 +82,8 @@ export const SemiCircularPart = forwardRef<ReactECharts, CircularPartProps>(({co
 export const CircularPart = forwardRef<ReactECharts, CircularPartProps>(({color, percentage, className}, ref) => {
     const option = {
         series: [
-            makeCircularSeriesConfig(greyColor(), 180, -180, '6vmin'),
-            makeCircularSeriesConfig(color, 180, Math.round(180-360*percentage/100), '6vmin'),
+            makeCircularSeriesConfig(greyColor(), 180, -180),
+            makeCircularSeriesConfig(color, 180, Math.round(180-360*percentage/100)),
           ]
     }
     return <ReactECharts ref={ref} option={option} className={className} opts={{renderer: 'svg'}}/>

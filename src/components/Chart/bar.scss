@@ -51,11 +51,11 @@
                 background-color: rgba(235, 235, 235, 0.1);
             }
             height: 12vw * $pvw;
-            border-radius: 3vw * $pvw;
+            border-radius: 30vw;
 
             .chartBarFilled {
                 height: 100%;
-                border-radius: 3vw * $pvw;
+                border-radius: 30vw;
             }
         }
     }
