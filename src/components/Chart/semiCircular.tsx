@@ -5,7 +5,7 @@ import { useResizeDetector } from 'react-resize-detector';
 import './semiCircular.scss'
 import { createRef, useEffect, useRef } from "react";
 import ReactECharts from 'echarts-for-react';
-import { getLongTextClass, isConfigLayout } from "../common";
+import { getLongTextClass, isConfigLayout, onDrakModeChange } from "../common";
 import { dashboard } from "@lark-base-open/js-sdk";
 
 

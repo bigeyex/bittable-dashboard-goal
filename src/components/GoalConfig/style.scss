@@ -10,8 +10,27 @@
 
 ::-webkit-scrollbar-thumb {
     background-color: rgb(194,194,194);
+    background-clip: content-box;
+    border: 1px solid transparent;
     border-radius: 8px;
-  }
+}
+
+body[theme-mode="dark"] ::-webkit-scrollbar-thumb {
+    background-color: rgba(235,235,235,0.3);
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
 
 .configForm.semi-form {
     width: 100%;
@@ -154,6 +173,7 @@
             border-width: 2px;
             margin-left: -2px;
             margin-right: -2px;
+            border-radius: 6px;
 
             .swatch {
                 background-image: url(/src/assets/icons/icon-colorpicker-checked.svg);
@@ -219,7 +239,7 @@
         .unitPosition {
             height: 30px;
             border-radius: 6px;
-            border: 1px solid rgba(222, 224, 227, 1);
+            border: 1px solid rgba(208, 211, 214, 1);
             flex: 1;
             display: flex;
             .semi-radio {
@@ -273,7 +293,7 @@ body[theme-mode="dark"] {
             .semi-radio {
                 border: 1px solid #505050;
                 .iconFrame {
-                    background-color: #121212;
+                    background-color: #373737;
                 }
                 .iconFrame.bar {
                     background-image: url(/src/assets/icons/icon-charttype-bar-dark.svg);

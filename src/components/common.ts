@@ -64,3 +64,11 @@ export function useTheme() {
     })
   }, [])
 }
+
+export function onDrakModeChange(callback:() => void) {
+  useLayoutEffect(() => {
+    bitable.bridge.onThemeChange((e) => {
+      callback()
+    })
+  }, [])
+}

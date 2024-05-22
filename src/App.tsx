@@ -18,7 +18,7 @@ export default function App() {
   }, [])
 
   useEffect(() => {
-    if (dashboard.state === DashboardState.View) {
+    if (dashboard.state === DashboardState.View || dashboard.state === DashboardState.FullScreen) {
       fetchInitData()
 
       dashboard.onConfigChange(e => {
