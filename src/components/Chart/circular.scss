@@ -59,6 +59,10 @@
             .percentage {
                 font-size: 13vw * $pvw;
                 font-weight: 900;
+
+                &.longText {
+                    font-size: 9vw * $pvw;
+                }
             }
         }
 

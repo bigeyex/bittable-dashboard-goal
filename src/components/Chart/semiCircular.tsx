@@ -9,7 +9,7 @@ import { getLongTextClass, isConfigLayout, onDrakModeChange } from "../common";
 import { dashboard } from "@lark-base-open/js-sdk";
 
 
-export default ({currentValueText, targetValueText, color, percentage}:GoalChartProps) => {
+export default ({currentValueText, targetValueText, color, percentage, percentageText}:GoalChartProps) => {
     const chartRef = createRef<ReactECharts>()
 
     const { width, height, ref } = useResizeDetector({
@@ -27,8 +27,8 @@ export default ({currentValueText, targetValueText, color, percentage}:GoalChart
     return <div className={'goalchartSemiCircularContainer' + (isConfigLayout() ? ' config' : '')}>
         <div className="semiCircle">
             <div className="textRegion">
-                <div className="percentage">{percentage}%</div>
-                <div className={"detailNumbers" + getLongTextClass(currentValueText, targetValueText, percentage, 16)}>
+                <div className="percentage">{percentageText}%</div>
+                <div className={"detailNumbers" + getLongTextClass(currentValueText, targetValueText, percentageText, 16)}>
                     <div className="currentValue" style={{color: `${color}`}}>{currentValueText}</div>
                     <div className="seperatorContainer">
                         <div className="vSeperator"></div>

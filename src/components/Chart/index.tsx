@@ -9,6 +9,7 @@ export interface GoalChartProps {
     targetValueText: string;
     color: string;
     percentage: number;
+    percentageText: string;
 }
 
 export default () => {
@@ -39,7 +40,13 @@ export default () => {
         return result
     }
 
-    let percentage = Math.round(100 * currentValue / Number(config.targetValue))
+    let percentage = config.targetValueAsDenominator ? 
+        100 * Number(config.targetValue) / currentValue
+        : 100 * currentValue / Number(config.targetValue)
+    let percentageText = percentage.toFixed(0)
+    if (config.percentageNumericDigits) {
+        percentageText = percentage.toFixed(config.percentageNumericDigits)
+    }
     if (percentage > 100) { percentage = 100 }
     if (percentage < 0) { percentage = 0 }
 
@@ -47,7 +54,8 @@ export default () => {
         currentValueText: formatNumber(currentValue),
         targetValueText: formatNumber(Number(config.targetValue)),
         color: darkModeThemeColor(config.color),
-        percentage: percentage
+        percentage: percentage,
+        percentageText: percentageText
     }
 
     if (config.chartType === 'semiCircular') {

@@ -32,8 +32,8 @@ export const darkModeThemeColor = (color: string) => {
   }
 }
 
-export const getLongTextClass = (currentValueText:string, targetValueText:string, percentage:number, firstThreshold=19, secondThreshold=28) => {
-  const fullTextLength = currentValueText.length + targetValueText.length + `${percentage}%`.length
+export const getLongTextClass = (currentValueText:string, targetValueText:string, percentageText:string, firstThreshold=18, secondThreshold=28) => {
+  const fullTextLength = currentValueText.length + targetValueText.length + `${percentageText}%`.length
     let longTextClass = ''
     if (fullTextLength > secondThreshold) {
         longTextClass = ' longLongText'

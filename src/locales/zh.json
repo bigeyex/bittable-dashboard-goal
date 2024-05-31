@@ -24,10 +24,12 @@
   "left": "左",
   "right": "右",
   "format": "格式",
+  "percenageFormat": "百分比格式",
   "integer": "整数",
   "keepOneDigit": "保留 1 位小数",
   "keepTwoDigit": "保留 2 位小数",
   "abbrPerKilo": "千位缩写",
+  "targetValueAsDenominator": "用目标值除以当前值计算百分比",
 
   "confirm": "确定"
 }

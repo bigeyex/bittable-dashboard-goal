@@ -9,7 +9,7 @@ import { getLongTextClass, isConfigLayout } from "../common";
 import { dashboard } from "@lark-base-open/js-sdk";
 
 
-export default ({currentValueText, targetValueText, color, percentage}:GoalChartProps) => {
+export default ({currentValueText, targetValueText, color, percentage, percentageText}:GoalChartProps) => {
     const chartRef = createRef<ReactECharts>()
 
     const { width, height, ref } = useResizeDetector({
@@ -26,7 +26,7 @@ export default ({currentValueText, targetValueText, color, percentage}:GoalChart
 
     return <div className={'goalchartCircularContainer' + (isConfigLayout() ? ' config' : '')}>
         <div className="circle">
-            <div className={"detailNumbers" + getLongTextClass(currentValueText, targetValueText, percentage, 23)}>
+            <div className={"detailNumbers" + getLongTextClass(currentValueText, targetValueText, percentageText, 23)}>
                 <div className="currentValue" style={{color: `${color}`}}>{currentValueText}</div>
                 <div className="seperatorContainer">
                     <div className="vSeperator"></div>
@@ -35,7 +35,7 @@ export default ({currentValueText, targetValueText, color, percentage}:GoalChart
             </div>
             <div ref={ref} className="chartRegion">
                 <CircularPart ref={chartRef} className="circularPart" color={color} percentage={percentage}/>
-                <div className="percentage">{percentage}%</div>
+                <div className={"percentage" + ((percentageText.length > 4) ? ' longText': '')}>{percentageText}%</div>
             </div>
         </div>
     </div>

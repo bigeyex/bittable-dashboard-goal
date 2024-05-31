@@ -163,7 +163,11 @@ export default () => {
 
             <Divider/>
 
-            <Form.Input field="targetValue" type="number" label={T("targetValue")} initValue={100}></Form.Input>
+            <Form.InputGroup label={{ text: T("targetValue") }} className='fieldNumericFormat'>
+                <Form.Input field="targetValue" type="number" label={T("targetValue")} initValue={100}></Form.Input>
+                <Form.Checkbox field="targetValueAsDenominator" initValue={false}>{T("targetValueAsDenominator")}</Form.Checkbox>
+            </Form.InputGroup>
+            
 
             <Form.Select field="currentValueCalcMethod" label={T("currentValue")} initValue="count">
                 <Select.Option value="count">{T("countRecords")}</Select.Option>
@@ -205,7 +209,14 @@ export default () => {
                     <Select.Option value={2}>{T("keepTwoDigit")}</Select.Option>
                 </Form.Select>
                 <Form.Checkbox field="numericAbbrKilos" initValue={false}>{T("abbrPerKilo")}</Form.Checkbox>
+            </Form.InputGroup>
 
+            <Form.InputGroup label={{ text: T("percenageFormat") }} className='fieldNumericFormat'>
+                <Form.Select field="percentageNumericDigits" initValue={0}>
+                    <Select.Option value={0}>{T("integer")}</Select.Option>
+                    <Select.Option value={1}>{T("keepOneDigit")}</Select.Option>
+                    <Select.Option value={2}>{T("keepTwoDigit")}</Select.Option>
+                </Form.Select>
             </Form.InputGroup>
 
         </div>

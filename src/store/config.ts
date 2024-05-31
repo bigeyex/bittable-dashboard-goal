@@ -18,6 +18,8 @@ export interface ConfigState {
     targetValue: string
     unitPosition: string
     unitSign: string
+    percentageNumericDigits: number
+    targetValueAsDenominator: boolean
 }
 
 export interface ConfigSliceState {
@@ -37,10 +39,12 @@ const initialState: ConfigSliceState = {
     dataSource: "",
     chartType: "bar",
     numericAbbrKilos: false,
+    targetValueAsDenominator: false,
     numericDigits: 0,
     targetValue: '100',
     unitPosition: "left",
     unitSign: "$",
+    percentageNumericDigits: 0,
   }
 }
 

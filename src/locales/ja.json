@@ -20,9 +20,12 @@
     "left": "左",
     "right": "右",
     "format": "形式",
+    "percenageFormat": "パーセンテージ形式",
     "integer": "整数",
     "keepOneDigit": "小数点以下 1 桁を保持",
     "keepTwoDigit": "小数点以下 2 桁を保持",
     "abbrPerKilo": "千単位の略語",
+    "targetValueAsDenominator": "目標値を現在の値で割ってパーセンテージを計算します",
     "confirm": "確定"
+    
   }
