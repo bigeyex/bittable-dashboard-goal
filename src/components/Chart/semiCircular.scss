@@ -1,16 +1,15 @@
 /* 1 px = 0.5 vmin */
 .goalchartSemiCircularContainer {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
     width: 100%;
     overflow: hidden;
 }
 
-@mixin semiCircleMixin($pvmin: 1) {
+@mixin semiCircleMixin($pvw: 1) {
     .semiCircle {
-        width: 130vmin * $pvmin;
-        margin-top: 15vmin * $pvmin;
+        width: 130vw * $pvw;
         position: relative;
 
         .chartRegion {
@@ -29,30 +28,30 @@
         .textRegion {
             display: flex;
             flex-direction: column;
-            margin-top: 26vmin * $pvmin;
+            margin-top: 26vw * $pvw;
             align-items: center;
 
             .percentage {
-                font-size: 18vmin * $pvmin;
+                font-size: 18vw * $pvw;
                 font-weight: 900;
             }
 
             .detailNumbers {
                 display: flex;
                 flex-direction: row;
-                font-size: 10vmin * $pvmin;
+                font-size: 10vw * $pvw;
                 &.longText {
-                    font-size: 10vmin * $pvmin * 0.7;
-                    margin-top: 6vmin * $pvmin;
+                    font-size: 10vw * $pvw * 0.7;
+                    margin-top: 6vw * $pvw;
                 }
                 &.longLongText {
-                    font-size: 10vmin * $pvmin * 0.55;
+                    font-size: 10vw * $pvw * 0.55;
                 }
                 font-weight: 600;
-                margin-top: 3vmin * $pvmin;
+                margin-top: 3vw * $pvw;
 
                 .seperatorContainer {
-                    width: 10vmin * $pvmin;
+                    width: 10vw * $pvw;
                     display: flex;
                     justify-content: center;
 
@@ -70,13 +69,9 @@
 }
 
 .goalchartSemiCircularContainer {
-    @include semiCircleMixin()
+    @include semiCircleMixin($pvw: 0.63)
 }
 
 .goalchartSemiCircularContainer.config {
-    @include semiCircleMixin($pvmin: 0.8);
-
-    .semiCircle {
-        margin-top: 20vmin;
-    }
+    @include semiCircleMixin($pvw: 0.37);
 }
