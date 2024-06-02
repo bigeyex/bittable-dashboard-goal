@@ -24,6 +24,14 @@ const unitAbbrRules:UnitAbbrRuleSet = {
     'kwan' : { size:10000000, suffix:T('QIANWAN') },
     'yi' : { size:100000000, suffix:T('YI') },
   },
+  'ja': {
+    'none' : { size:1, suffix:'' },
+    'k' : { size:1000, suffix:T('K') },
+    'wan' : { size:10000, suffix:T('WAN') },
+    'm' : { size:1000000, suffix:T('M') },
+    'kwan' : { size:10000000, suffix:T('QIANWAN') },
+    'yi' : { size:100000000, suffix:T('YI') },
+  },
   'default': {
     'none' : { size:1, suffix:'' },
     'k' : { size:1000, suffix:T('K') },
