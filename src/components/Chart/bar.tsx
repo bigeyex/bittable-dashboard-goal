@@ -14,7 +14,7 @@ export default ({currentValueText, targetValueText, color, percentage, percentag
                 <div className="percentage">{percentageText}%</div>
             </div>
             <div className="chartBar">
-                <div className="chartBarFilled" style={{width: `${percentage}%`, backgroundColor: `${color}`}}></div>
+                <div className="chartBarFilled" style={{width: `${percentage < 8 && percentage > 0 ? 8 : percentage}%`, backgroundColor: `${color}`}}></div>
             </div>
         </div>
     </div>

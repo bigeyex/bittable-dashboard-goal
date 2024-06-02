@@ -37,7 +37,7 @@ export default ({currentValueText, targetValueText, color, percentage, percentag
                 </div>
             </div>
             <div ref={ref} className="chartRegion">
-                <SemiCircularPart ref={chartRef} className="circularPart" color={color} percentage={percentage}/>
+                <SemiCircularPart ref={chartRef} className="circularPart" color={color} percentage={percentage < 9 && percentage > 0 ? 9 : percentage}/>
             </div>
         </div>
     </div>
