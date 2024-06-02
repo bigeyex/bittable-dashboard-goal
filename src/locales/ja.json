@@ -20,6 +20,15 @@
     "left": "左",
     "right": "右",
     "format": "形式",
+
+    "customValue": "Custom Value",
+    "useBittableData": "Bittable Data",
+    "formatSettings": "Format Settings",
+    "prefix": "Prefix",
+    "suffix": "Suffix",
+    "pleaseInputPrefix": "Please Input Prefix",
+    "pleaseInputSuffix": "Please Input Suffix",
+  
     "percenageFormat": "パーセンテージ形式",
     "integer": "整数",
     "keepOneDigit": "小数点以下 1 桁を保持",

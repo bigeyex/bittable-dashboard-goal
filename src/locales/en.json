@@ -10,6 +10,8 @@
   "targetValue": "Target value",
   "targetValueAsDenominator": "Calculate the percentage by dividing the target value by the current value",
   "currentValue": "Current value",
+  "customValue": "Custom Value",
+  "useBittableData": "Bittable Data",
   "countRecords": "Count of records",
   "aggrValue": "Aggregate value",
   "selectField": "Select field",
@@ -21,6 +23,15 @@
   "left": "Left",
   "right": "Right",
   "format": "Format",
+
+  "none": "None",
+
+  "formatSettings": "Format Settings",
+  "prefix": "Prefix",
+  "suffix": "Suffix",
+  "pleaseInputPrefix": "Please Input Prefix",
+  "pleaseInputSuffix": "Please Input Suffix",
+
   "percenageFormat": "Percentage Format",
   "integer": "Integer",
   "keepOneDigit": "Keep one decimal",

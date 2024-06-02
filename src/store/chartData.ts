@@ -4,32 +4,27 @@ import { dashboard, IData } from '@lark-base-open/js-sdk'
 
 export interface ChartDataState {
     currentValue: number
+    targetValue: number
 }
 
 const initialState:ChartDataState = {
-    currentValue: 0
+    currentValue: 0,
+    targetValue: 100
 }
 
 export const chartDataSlice = createSlice({
     name: 'chartData',
     initialState,
     reducers: {
-      setCurrentValueFromIData: (state, action:PayloadAction<IData>) => {
-        // payload example: [[{value: "Bitable_Dashboard_Count", text: "Bitable_Dashboard_Count"}]
-        // [{value: 10, text: "10"}]]
-        if (action.payload.length >= 2 ) {
-          state.currentValue = action.payload[1][0].value as number
-        }
+      setCurrentValue: (state, action:PayloadAction<number>) => {
+        state.currentValue = action.payload
+      },
+      setTargetValue: (state, action:PayloadAction<number>) => {
+        state.targetValue = action.payload
       },
     }
 })
 
-export const { setCurrentValueFromIData } = chartDataSlice.actions
-
-export const loadChartData = ():AppThunk => (async (dispatch, getState) => {
-    const dashboardData = await dashboard.getData() 
-    dispatch(setCurrentValueFromIData(dashboardData))
-})
-
+export const { setCurrentValue, setTargetValue } = chartDataSlice.actions
 
 export default chartDataSlice.reducer

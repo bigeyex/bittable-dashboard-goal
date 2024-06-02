@@ -8,8 +8,9 @@ import { DashboardState, bitable, dashboard } from "@lark-base-open/js-sdk";
 import './style.scss'
 import config, { ConfigPayload, ConfigState, loadConfig, saveConfig, setConfigState, updatePreviewData } from '../../store/config';
 import { useAppDispatch, useAppSelector } from '../../store/hook';
-import { darkModeThemeColor, themeColors } from '../common';
+import { darkModeThemeColor, getLocalUnitAbbrRule, themeColors } from '../common';
 import { T } from '../../locales/i18n';
+import Section from '@douyinfe/semi-ui/lib/es/form/section';
 
 export default () => {
     type TableInfo = {tableId: string, tableName: string}
@@ -28,18 +29,21 @@ export default () => {
         form: (values:ConfigPayload) => {},
         dataSource: emptyDefaultValueSetter,
         dataRange: emptyDefaultValueSetter,
-        currentValueAggField: emptyDefaultValueSetter
+        currentValueAggField: emptyDefaultValueSetter,
+        targetValueAggField: emptyDefaultValueSetter
     }
 
     const DefaultValueSetter = () => {
         const dataRangeFieldApi = useFieldApi('dataRange')
         const dataSourceFieldApi = useFieldApi('dataSource')
         const currentValueAggFieldApi = useFieldApi('currentValueAggField')
+        const targetValueAggFieldApi = useFieldApi('targetValueAggField')
         const formApi = useFormApi()
         setDefaultValues.form = (values ) => { formApi.setValues(values) }
         setDefaultValues.dataSource = (value: string) => { dataSourceFieldApi.setValue(value) }
         setDefaultValues.dataRange = (value: string) => { dataRangeFieldApi.setValue(value) }
         setDefaultValues.currentValueAggField = (value: string) => { currentValueAggFieldApi.setValue(value) }
+        setDefaultValues.targetValueAggField = (value: string) => { targetValueAggFieldApi.setValue(value) }
         return '';
     }
 
@@ -80,6 +84,7 @@ export default () => {
         setNumberFieldList(numberFieldsInfo)
         if(numberFieldsInfo.length > 0) {
             setDefaultValues.currentValueAggField(numberFieldsInfo[0].fieldId)
+            setDefaultValues.targetValueAggField(numberFieldsInfo[0].fieldId)
         }
     }
 
@@ -100,6 +105,7 @@ export default () => {
                 setDefaultValues.dataRange('{"type":"ALL"}')
             }
         }
+        dispatch(updatePreviewData(configState))
     }
     useEffect(() => {
         fetchInitData()
@@ -163,44 +169,78 @@ export default () => {
 
             <Divider/>
 
-            <Form.InputGroup label={{ text: T("targetValue") }} className='fieldNumericFormat'>
-                <Form.Input field="targetValue" type="number" label={T("targetValue")} initValue={100}></Form.Input>
-                <Form.Checkbox field="targetValueAsDenominator" initValue={false}>{T("targetValueAsDenominator")}</Form.Checkbox>
+            <Form.InputGroup label={{ text: T("targetValue") }} className='fieldUnit'>
+                <Form.RadioGroup type="button" field="targetValueType" initValue="customValue" className="unitPosition">
+                    <Form.Radio value="customValue">{T("customValue")}</Form.Radio>
+                    <Form.Radio value="useBittableData">{T("useBittableData")}</Form.Radio>
+                </Form.RadioGroup>
+                <Form.Input field="targetValue" type="number" initValue={100}
+                        style={config.targetValueType === 'customValue' ? {} : {display: 'none'}}></Form.Input>
+                <Form.Select field="targetValueCalcMethod" initValue="count"
+                        style={config.targetValueType === 'useBittableData' ? {} : {display: 'none'}}>
+                    <Select.Option value="count">{T("countRecords")}</Select.Option>
+                    <Select.Option value="calc">{T("aggrValue")}</Select.Option>
+                </Form.Select>
+                <Form.Select field="targetValueAggField" initValue="" className='currentValueAggField' showArrow={false}
+                        optionList={ numberFieldList.map(fieldInfo => ({value: fieldInfo.fieldId, label: fieldInfo.fieldName}) )}
+                        prefix={<div className='prefixIcon'><IconFormular/></div>}
+                        suffix={
+                            <Form.Select field="targetValueAggMethod" className='currentValueAggMethod' noLabel={true} showArrow={false}
+                                    initValue="SUM"  onFocus={(e) => {e.stopPropagation()}} dropdownClassName="aggMethodDropdown" position='bottomRight'
+                                    suffix={<div className='suffixIcon'><IconMore/></div>}>
+                                <Select.Option value="SUM">{T("sum")}</Select.Option>
+                                <Select.Option value="AVERAGE">{T("average")}</Select.Option>
+                                <Select.Option value="MAX">{T("max")}</Select.Option>
+                                <Select.Option value="MIN">{T("min")}</Select.Option>
+                            </Form.Select>
+                        }
+                        style={config.targetValueType === 'useBittableData' && config.targetValueCalcMethod === 'calc' ? {} : {display: 'none'}}
+                        >
+                </Form.Select>
             </Form.InputGroup>
             
-
-            <Form.Select field="currentValueCalcMethod" label={T("currentValue")} initValue="count">
-                <Select.Option value="count">{T("countRecords")}</Select.Option>
-                <Select.Option value="calc">{T("aggrValue")}</Select.Option>
-            </Form.Select>
-
                 
-
-            <Form.Select field="currentValueAggField" initValue=""  label={T("selectField")} className='currentValueAggField' showArrow={false}
-                    optionList={ numberFieldList.map(fieldInfo => ({value: fieldInfo.fieldId, label: fieldInfo.fieldName}) )}
-                    prefix={<div className='prefixIcon'><IconFormular/></div>}
-                    suffix={
-                        <Form.Select field="currentValueAggMethod" className='currentValueAggMethod' noLabel={true} showArrow={false}
-                                initValue="SUM"  onFocus={(e) => {e.stopPropagation()}} dropdownClassName="aggMethodDropdown" position='bottomRight'
-                                suffix={<div className='suffixIcon'><IconMore/></div>}>
-                            <Select.Option value="SUM">{T("sum")}</Select.Option>
-                            <Select.Option value="AVERAGE">{T("average")}</Select.Option>
-                            <Select.Option value="MAX">{T("max")}</Select.Option>
-                            <Select.Option value="MIN">{T("min")}</Select.Option>
-                        </Form.Select>
-                    }
-                    fieldStyle={config.currentValueCalcMethod === 'calc' ? {} : {display: 'none'}}
-                    >
-            </Form.Select>
-
-
-            <Form.InputGroup label={{ text: T("unit") }} className='fieldUnit'>
-                <Form.Input field="unitSign" initValue="$" className='unitSymbol'></Form.Input>
-                <Form.RadioGroup type="button" field="unitPosition" initValue="left" className="unitPosition">
-                    <Form.Radio value="left">{T("left")}</Form.Radio>
-                    <Form.Radio value="right">{T("right")}</Form.Radio>
+            <Form.InputGroup label={{ text: T("currentValue") }} className='fieldUnit'>
+                <Form.RadioGroup type="button" field="currentValueType" initValue="useBittableData" className="unitPosition">
+                    <Form.Radio value="customValue">{T("customValue")}</Form.Radio>
+                    <Form.Radio value="useBittableData">{T("useBittableData")}</Form.Radio>
                 </Form.RadioGroup>
+                <Form.Input field="currentValue" type="number" initValue={0}
+                        style={config.currentValueType === 'customValue' ? {} : {display: 'none'}}></Form.Input>
+                <Form.Select field="currentValueCalcMethod" label={T("currentValue")} initValue="count"
+                        style={config.currentValueType === 'useBittableData' ? {} : {display: 'none'}}>
+                    <Select.Option value="count">{T("countRecords")}</Select.Option>
+                    <Select.Option value="calc">{T("aggrValue")}</Select.Option>
+                </Form.Select>
+                <Form.Select field="currentValueAggField" initValue="" className='currentValueAggField' showArrow={false}
+                        optionList={ numberFieldList.map(fieldInfo => ({value: fieldInfo.fieldId, label: fieldInfo.fieldName}) )}
+                        prefix={<div className='prefixIcon'><IconFormular/></div>}
+                        suffix={
+                            <Form.Select field="currentValueAggMethod" className='currentValueAggMethod' noLabel={true} showArrow={false}
+                                    initValue="SUM"  onFocus={(e) => {e.stopPropagation()}} dropdownClassName="aggMethodDropdown" position='bottomRight'
+                                    suffix={<div className='suffixIcon'><IconMore/></div>}>
+                                <Select.Option value="SUM">{T("sum")}</Select.Option>
+                                <Select.Option value="AVERAGE">{T("average")}</Select.Option>
+                                <Select.Option value="MAX">{T("max")}</Select.Option>
+                                <Select.Option value="MIN">{T("min")}</Select.Option>
+                            </Form.Select>
+                        }
+                        style={config.currentValueType === 'useBittableData' && config.currentValueCalcMethod === 'calc' ? {} : {display: 'none'}}
+                        >
+                </Form.Select>
             </Form.InputGroup>
+
+            <Section text={T("formatSettings")}>
+                <Form.Select field="abbrRule" label={{ text: T("unit") }} initValue="none">
+                    {Object.entries(getLocalUnitAbbrRule()).map(([key, value]) => {
+                        return <Select.Option key={key} value={key}>{key==='none' ? T('none') : value.suffix}</Select.Option>
+                    })}
+                </Form.Select>
+                <div className="flexFormRow">
+                    <Form.Input field="numberPrefix" initValue={''} label={T("prefix")} placeholder={T("pleaseInputPrefix")} ></Form.Input>
+                    <Form.Input field="numberSuffix" initValue={''} label={T("suffix")} placeholder={T("pleaseInputSuffix")} ></Form.Input>
+                </div>
+            </Section>
 
             <Form.InputGroup label={{ text: T("format") }} className='fieldNumericFormat'>
                 <Form.Select field="numericDigits" initValue={0}>
@@ -208,7 +248,6 @@ export default () => {
                     <Select.Option value={1}>{T("keepOneDigit")}</Select.Option>
                     <Select.Option value={2}>{T("keepTwoDigit")}</Select.Option>
                 </Form.Select>
-                <Form.Checkbox field="numericAbbrKilos" initValue={false}>{T("abbrPerKilo")}</Form.Checkbox>
             </Form.InputGroup>
 
             <Form.InputGroup label={{ text: T("percenageFormat") }} className='fieldNumericFormat'>

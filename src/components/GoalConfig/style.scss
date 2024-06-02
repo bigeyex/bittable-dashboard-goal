@@ -47,6 +47,10 @@ input[type=number] {
         overflow: auto;
     }
 
+    .semi-input-wrapper {
+        border-radius: 6px;
+    }
+
     .configActions {
         height: 72px;
         padding: 0 20px;
@@ -67,6 +71,7 @@ input[type=number] {
 
     .semi-select {
         width: 100%;
+        border-radius: 6px;
     }
 
     .semi-form-field {
@@ -227,6 +232,34 @@ input[type=number] {
         }
     }
 
+    .semi-form-section {
+        padding-top: 4px;
+        padding-bottom: 4px;
+
+        .semi-form-section-text {
+            font-size: 14px;
+            font-weight: 400;
+            padding-top: 6px;
+            border-bottom: 0;
+            margin: 0;
+        }
+
+        .flexFormRow {
+            display: flex;
+            gap: 10px;
+        }
+
+        .semi-form-field {
+            padding-top: 6px;
+            padding-bottom: 6px;
+            
+            .semi-form-field-label-text {
+                color: rgba(143, 149, 158, 1);
+                font-size: 12px;
+                font-weight: 500;
+            }
+        }
+    }
 
     .fieldUnit {
         display: flex;
@@ -247,8 +280,11 @@ input[type=number] {
                 flex: 1;
                 padding: 3px;
 
+                .semi-radio-content {
+                    flex: 1;
+                }
+
                 .semi-radio-addon-buttonRadio {
-                    width: 34px;
                     color: rgba(31, 35, 41, 1);
                 }
 

@@ -12,6 +12,43 @@ export const themeColors = [
     'rgba(255, 129, 26, 1)', 'rgba(245, 74, 69, 1)'
 ]
 
+type UnitAbbrRule = { size:number, suffix:string }
+type LocalUnitAbbrRuleSet = { [key:string]: UnitAbbrRule }
+type UnitAbbrRuleSet = { [key:string]: LocalUnitAbbrRuleSet }
+const unitAbbrRules:UnitAbbrRuleSet = {
+  'zh': {
+    'none' : { size:1, suffix:'' },
+    'k' : { size:1000, suffix:T('K') },
+    'wan' : { size:10000, suffix:T('WAN') },
+    'm' : { size:1000000, suffix:T('M') },
+    'kwan' : { size:10000000, suffix:T('QIANWAN') },
+    'yi' : { size:100000000, suffix:T('YI') },
+  },
+  'default': {
+    'none' : { size:1, suffix:'' },
+    'k' : { size:1000, suffix:T('K') },
+    'm' : { size:1000000, suffix:T('M') },
+  },
+}
+
+export const getLocalUnitAbbrRule = () => {
+  if (i18n.language in unitAbbrRules) {
+    return unitAbbrRules[i18n.language]
+  }
+  else {
+    return unitAbbrRules['default']
+  }
+}
+
+export const getLocalUnitAbbrNumber = (number: number, abbrRule:string) => {
+  const abbrRuleSet = getLocalUnitAbbrRule()
+  if (!(abbrRule in abbrRuleSet)) {
+    abbrRule = 'none'
+  }
+  const rule = abbrRuleSet[abbrRule]
+  return (number / rule.size) + rule.suffix
+}
+
 export const darkModeThemeColor = (color: string) => {
   const lookup:{[key:string]: string} = {
     'rgba(31, 35, 41, 1)': '#EBEBEB',
@@ -45,6 +82,7 @@ export const getLongTextClass = (currentValueText:string, targetValueText:string
 }
 
 import { useLayoutEffect } from "react";
+import i18n, { T } from "../locales/i18n";
 
 function updateTheme(theme: string) {
   document.body.setAttribute('theme-mode', theme);

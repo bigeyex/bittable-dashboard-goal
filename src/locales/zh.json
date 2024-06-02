@@ -12,6 +12,8 @@
 
   "targetValue": "目标值",
   "currentValue": "当前值",
+  "customValue": "自定义值",
+  "useBittableData": "多维表格数据",
   "countRecords": "统计字段总数",
   "aggrValue": "统计字段数值",
   "selectField": "选择字段",
@@ -19,6 +21,18 @@
   "average": "平均值",
   "max": "最大值",
   "min": "最小值",
+
+  "formatSettings": "格式设置",
+  "prefix": "前缀",
+  "suffix": "后缀",
+  "pleaseInputPrefix": "请输入前缀",
+  "pleaseInputSuffix": "请输入后缀",
+  "none": "无",
+  "K": "千",
+  "WAN": "万",
+  "M": "百万",
+  "QIANWAN": "千万",
+  "YI": "亿",
 
   "unit": "单位",
   "left": "左",
