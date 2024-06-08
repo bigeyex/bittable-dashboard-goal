@@ -127,6 +127,9 @@ export const updatePreviewData = (payload:ConfigPayload):AppThunk => (async (dis
 export const refreshData = (payload:ConfigPayload):AppThunk => (async (dispatch, getState) => {
   const valueFromIDATA = (data:IData) => data.length >= 2 ? data[1][0].value as number : 0
   const configState = {...getState().config.config, ...payload}
+  /* bittable only supports getData with 1 condition;
+     and currentValue and targetValue may both use bitable data
+     so saveConfig() with condition before getData() each time */
   if (configState.currentValueType === 'useBittableData' && 'dataRange' in configState) {
     const currentValueDataCondition = currentValueDataConditionFromConfigState(configState)
     dashboard.saveConfig({
@@ -177,8 +180,11 @@ export const loadConfig = ():AppThunk<Promise<ConfigPayload>> => (async (dispatc
   const dashboardConfig = await dashboard.getConfig()
   if (dashboardConfig.customConfig && 'config' in dashboardConfig.customConfig) {
     const configState = dashboardConfig.customConfig['config'] as ConfigState
-    // update config only if it has changed
     const currentConfig = getState().config.config
+    /* only setConfigState if config has changed.
+       this is because in order to dashboard.getData() with multiple conditions, 
+       it needs to saveConfig with each condition, which will trigger onConfigChange.
+       To prevent flicking screen, check config change before setConfigState. */
     let hasChanged = false
     let key: keyof ConfigState
     for (key in configState) {
