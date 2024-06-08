@@ -4,7 +4,7 @@ import GoalConfig from './components/GoalConfig';
 import Chart from './components/Chart';
 import { useCallback, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from './store/hook';
-import { ConfigPayload, loadConfig, updatePreviewData } from './store/config';
+import { ConfigPayload, loadConfig, refreshData, updatePreviewData } from './store/config';
 import { useTheme } from './components/common';
 
 export default function App() {
@@ -14,7 +14,7 @@ export default function App() {
 
   const fetchInitData = useCallback(async() => {
     const configState = await dispatch<Promise<ConfigPayload>>(loadConfig())
-    dispatch(updatePreviewData(configState))
+    dispatch(refreshData(configState))
   }, [])
 
   useEffect(() => {
@@ -31,7 +31,7 @@ export default function App() {
     }, 2000);
     }  
     dashboard.onDataChange(e => {
-      dispatch(updatePreviewData(config))
+       dispatch(refreshData({}))
     })
   }, [])
 
