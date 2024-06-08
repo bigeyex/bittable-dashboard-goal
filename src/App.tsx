@@ -23,7 +23,7 @@ export default function App() {
 
       dashboard.onConfigChange(async(e) => {
         const configState = await dispatch<Promise<ConfigPayload>>(loadConfig())
-        dispatch(updatePreviewData(configState))
+        dispatch(refreshData(configState))
       })
 
       setTimeout(() => {
