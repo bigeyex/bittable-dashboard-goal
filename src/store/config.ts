@@ -127,18 +127,21 @@ export const updatePreviewData = (payload:ConfigPayload):AppThunk => (async (dis
 export const refreshData = (payload:ConfigPayload):AppThunk => (async (dispatch, getState) => {
   const valueFromIDATA = (data:IData) => data.length >= 2 ? data[1][0].value as number : 0
   const configState = {...getState().config.config, ...payload}
+  
   /* bittable only supports getData with 1 condition;
      and currentValue and targetValue may both use bitable data
      so saveConfig() with condition before getData() each time */
   if (configState.currentValueType === 'useBittableData' && 'dataRange' in configState) {
     const currentValueDataCondition = currentValueDataConditionFromConfigState(configState)
-    dashboard.saveConfig({
+    console.log('save config with 1st condition', JSON.stringify(currentValueDataCondition))
+    await dashboard.saveConfig({
       dataConditions: [currentValueDataCondition],
       customConfig: {
         'config': configState 
       }
     })
     const currentValuePreview = await dashboard.getData()
+    console.log('fetched data', JSON.stringify(valueFromIDATA(currentValuePreview)))
     dispatch(setCurrentValue(valueFromIDATA(currentValuePreview)))
   }
   else {
@@ -146,13 +149,15 @@ export const refreshData = (payload:ConfigPayload):AppThunk => (async (dispatch,
   }
   if (configState.targetValueType === 'useBittableData' && 'dataRange' in configState) {
     const targetValueDataCondition = targetValueDataConditionFromConfigState(configState)
-    dashboard.saveConfig({
+    console.log('save config with 2nd condition', JSON.stringify(targetValueDataCondition))
+    await dashboard.saveConfig({
       dataConditions: [targetValueDataCondition],
       customConfig: {
         'config': configState 
       }
     })
     const targetValuePreview = await dashboard.getData()
+    console.log('fetched 2nd data', JSON.stringify(valueFromIDATA(targetValuePreview)))
     dispatch(setTargetValue(valueFromIDATA(targetValuePreview)))
   }
   else {

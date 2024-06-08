@@ -9,6 +9,7 @@ import { useTheme } from './components/common';
 
 let lastConfigChanged = ''
 let lastDataChanged = ''
+let isRefreshingData = false
 
 export default function App() {
   const dispatch = useAppDispatch()
@@ -17,6 +18,7 @@ export default function App() {
 
   const fetchInitData = useCallback(async() => {
     const configState = await dispatch<Promise<ConfigPayload>>(loadConfig())
+    lastConfigChanged = JSON.stringify(configState)
     dispatch(refreshData(configState))
   }, [])
 
@@ -28,12 +30,14 @@ export default function App() {
         // because multiple saveConfig are used to fetch bitable data with 2 conditions,
         // to avoid onConfigChange-onDataChange death loop, only react when
         // config and data really changes
-        if (lastConfigChanged == JSON.stringify(e)) {
+        if (isRefreshingData || lastConfigChanged == JSON.stringify(e.data.customConfig)) {
           return
         }
-        lastConfigChanged = JSON.stringify(e)
+        isRefreshingData = true
+        lastConfigChanged = JSON.stringify(e.data.customConfig)
         const configState = await dispatch<Promise<ConfigPayload>>(loadConfig())
         dispatch(refreshData(configState))
+        isRefreshingData = false
       })
 
       setTimeout(() => {
@@ -42,11 +46,13 @@ export default function App() {
     }, 2000);
     }  
     dashboard.onDataChange(e => {
-      if (lastDataChanged == JSON.stringify(e)) {
+      if (isRefreshingData || lastDataChanged == JSON.stringify(e)) {
         return
       }
       lastDataChanged = JSON.stringify(e)
+      isRefreshingData = true
       dispatch(refreshData({}))
+      isRefreshingData = false
     })
   }, [])
 
