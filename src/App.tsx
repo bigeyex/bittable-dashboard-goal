@@ -7,6 +7,9 @@ import { useAppDispatch, useAppSelector } from './store/hook';
 import { ConfigPayload, loadConfig, refreshData, updatePreviewData } from './store/config';
 import { useTheme } from './components/common';
 
+let lastConfigChanged = ''
+let lastDataChanged = ''
+
 export default function App() {
   const dispatch = useAppDispatch()
   const config = useAppSelector(store => store.config.config)
@@ -22,17 +25,28 @@ export default function App() {
       fetchInitData()
 
       dashboard.onConfigChange(async(e) => {
+        // because multiple saveConfig are used to fetch bitable data with 2 conditions,
+        // to avoid onConfigChange-onDataChange death loop, only react when
+        // config and data really changes
+        if (lastConfigChanged == JSON.stringify(e)) {
+          return
+        }
+        lastConfigChanged = JSON.stringify(e)
         const configState = await dispatch<Promise<ConfigPayload>>(loadConfig())
         dispatch(refreshData(configState))
       })
 
       setTimeout(() => {
-        // 预留3s给浏览器进行渲染，3s后告知服务端可以进行截图了
+        // setRendered after 2 seconds, for bittable screenshot and push automation alerts.
         dashboard.setRendered();
     }, 2000);
     }  
     dashboard.onDataChange(e => {
-       dispatch(refreshData({}))
+      if (lastDataChanged == JSON.stringify(e)) {
+        return
+      }
+      lastDataChanged = JSON.stringify(e)
+      dispatch(refreshData({}))
     })
   }, [])
 
