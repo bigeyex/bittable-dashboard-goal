@@ -27,6 +27,7 @@ export default function App() {
       fetchInitData()
 
       dashboard.onConfigChange(async(e) => {
+        return
         // because multiple saveConfig are used to fetch bitable data with 2 conditions,
         // to avoid onConfigChange-onDataChange death loop, only react when
         // config and data really changes
@@ -46,6 +47,7 @@ export default function App() {
     }, 2000);
     }  
     dashboard.onDataChange(e => {
+      return
       if (isRefreshingData || lastDataChanged == JSON.stringify(e)) {
         return
       }
