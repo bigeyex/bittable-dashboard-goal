@@ -4,12 +4,8 @@ import GoalConfig from './components/GoalConfig';
 import Chart from './components/Chart';
 import { useCallback, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from './store/hook';
-import { ConfigPayload, loadConfig, refreshData, updatePreviewData } from './store/config';
+import { ConfigPayload, loadConfig, updatePreviewData } from './store/config';
 import { useTheme } from './components/common';
-
-let lastConfigChanged = ''
-let lastDataChanged = ''
-let isRefreshingData = false
 
 export default function App() {
   const dispatch = useAppDispatch()
@@ -18,43 +14,24 @@ export default function App() {
 
   const fetchInitData = useCallback(async() => {
     const configState = await dispatch<Promise<ConfigPayload>>(loadConfig())
-    lastConfigChanged = JSON.stringify(configState)
-    dispatch(refreshData(configState))
+    dispatch(updatePreviewData(configState))
   }, [])
 
   useEffect(() => {
     if (dashboard.state === DashboardState.View || dashboard.state === DashboardState.FullScreen) {
       fetchInitData()
 
-      dashboard.onConfigChange(async(e) => {
-        return
-        // because multiple saveConfig are used to fetch bitable data with 2 conditions,
-        // to avoid onConfigChange-onDataChange death loop, only react when
-        // config and data really changes
-        if (isRefreshingData || lastConfigChanged == JSON.stringify(e.data.customConfig)) {
-          return
-        }
-        isRefreshingData = true
-        lastConfigChanged = JSON.stringify(e.data.customConfig)
-        const configState = await dispatch<Promise<ConfigPayload>>(loadConfig())
-        dispatch(refreshData(configState))
-        isRefreshingData = false
+      dashboard.onConfigChange(e => {
+        dispatch(loadConfig())
       })
 
       setTimeout(() => {
-        // setRendered after 2 seconds, for bittable screenshot and push automation alerts.
+        // 预留3s给浏览器进行渲染，3s后告知服务端可以进行截图了
         dashboard.setRendered();
     }, 2000);
     }  
     dashboard.onDataChange(e => {
-      return
-      if (isRefreshingData || lastDataChanged == JSON.stringify(e)) {
-        return
-      }
-      lastDataChanged = JSON.stringify(e)
-      isRefreshingData = true
-      dispatch(refreshData({}))
-      isRefreshingData = false
+      dispatch(updatePreviewData(config))
     })
   }, [])
 

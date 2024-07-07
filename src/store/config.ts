@@ -1,4 +1,4 @@
-import { createSlice, current, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from './index'
 import { AppThunk } from './hook'
 import { dashboard, IDataCondition, ISeries, DashboardState, IData } from '@lark-base-open/js-sdk'
@@ -124,47 +124,6 @@ export const updatePreviewData = (payload:ConfigPayload):AppThunk => (async (dis
   }
 })
 
-export const refreshData = (payload:ConfigPayload):AppThunk => (async (dispatch, getState) => {
-  const valueFromIDATA = (data:IData) => data.length >= 2 ? data[1][0].value as number : 0
-  const configState = {...getState().config.config, ...payload}
-  
-  /* bittable only supports getData with 1 condition;
-     and currentValue and targetValue may both use bitable data
-     so saveConfig() with condition before getData() each time */
-  if (configState.currentValueType === 'useBittableData' && 'dataRange' in configState) {
-    const currentValueDataCondition = currentValueDataConditionFromConfigState(configState)
-    console.log('save config with 1st condition', JSON.stringify(currentValueDataCondition))
-    await dashboard.saveConfig({
-      dataConditions: [currentValueDataCondition],
-      customConfig: {
-        'config': configState 
-      }
-    })
-    const currentValuePreview = await dashboard.getData()
-    console.log('fetched data', JSON.stringify(valueFromIDATA(currentValuePreview)))
-    dispatch(setCurrentValue(valueFromIDATA(currentValuePreview)))
-  }
-  else {
-    dispatch(setCurrentValue(Number(configState.currentValue)))
-  }
-  if (configState.targetValueType === 'useBittableData' && 'dataRange' in configState) {
-    const targetValueDataCondition = targetValueDataConditionFromConfigState(configState)
-    console.log('save config with 2nd condition', JSON.stringify(targetValueDataCondition))
-    await dashboard.saveConfig({
-      dataConditions: [targetValueDataCondition],
-      customConfig: {
-        'config': configState 
-      }
-    })
-    const targetValuePreview = await dashboard.getData()
-    console.log('fetched 2nd data', JSON.stringify(valueFromIDATA(targetValuePreview)))
-    dispatch(setTargetValue(valueFromIDATA(targetValuePreview)))
-  }
-  else {
-    dispatch(setTargetValue(Number(configState.targetValue)))
-  }
-})
-
 // 保存图表配置到多维表格，在确认配置时调用
 export const saveConfig = (payload:ConfigPayload):AppThunk => (async (dispatch, getState) => {
   const configState = {...getState().config.config, ...payload}
@@ -185,22 +144,7 @@ export const loadConfig = ():AppThunk<Promise<ConfigPayload>> => (async (dispatc
   const dashboardConfig = await dashboard.getConfig()
   if (dashboardConfig.customConfig && 'config' in dashboardConfig.customConfig) {
     const configState = dashboardConfig.customConfig['config'] as ConfigState
-    const currentConfig = getState().config.config
-    /* only setConfigState if config has changed.
-       this is because in order to dashboard.getData() with multiple conditions, 
-       it needs to saveConfig with each condition, which will trigger onConfigChange.
-       To prevent flicking screen, check config change before setConfigState. */
-    let hasChanged = false
-    let key: keyof ConfigState
-    for (key in configState) {
-      if (!(key in currentConfig && currentConfig[key] == configState[key])) {
-        hasChanged = true
-        break
-      }
-    }
-    if(hasChanged){
-      dispatch(setConfigState(configState))
-    }
+    dispatch(setConfigState(configState))
     return configState
   }
   return initialState.config
