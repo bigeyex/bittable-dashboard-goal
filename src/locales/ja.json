@@ -35,6 +35,9 @@
     "suffix": "サフィックス",
     "pleaseInputPrefix": "プレフィックスを入力してください",
     "pleaseInputSuffix": "サフィックスを入力してください",
+
+    "usePreviewDataAlertText": "現在のダッシュボードバージョンの制限により、現在の値とターゲット値がすべてBitableから計算されている場合、編集権限を持つユーザーのみが使用でき、データの自動更新は無効になります。",
+
   
     "percenageFormat": "パーセンテージ形式",
     "integer": "整数",

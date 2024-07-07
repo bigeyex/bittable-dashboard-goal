@@ -106,18 +106,36 @@ function targetValueDataConditionFromConfigState(state:ConfigState):IDataConditi
 export const updatePreviewData = (payload:ConfigPayload):AppThunk => (async (dispatch, getState) => {
   const valueFromIDATA = (data:IData) => data.length >= 2 ? data[1][0].value as number : 0
   const configState = payload as ConfigState
+  // 因为多维表格API限制，如果有两组条件，虽然可以使用getPreviewData获得数据，但只有编辑权限才能使用图表，
+  // 且监测更新会受限。所以这里做兼容，如果只有一组条件，(在非编辑情况下)就用getData()；否则使用getPreviewData
+  const useGetPreviewData = dashboard.state === DashboardState.Config || dashboard.state === DashboardState.Create ||
+      (configState.currentValueType === 'useBittableData' && configState.targetValueType === 'useBittableData');
+  console.log('use preview data: ', useGetPreviewData)
+  console.log(configState)
   if (configState.currentValueType === 'useBittableData' && 'dataRange' in configState) {
-    const currentValueDataCondition = currentValueDataConditionFromConfigState(configState)
-    const currentValuePreview = await dashboard.getPreviewData(currentValueDataCondition)
-    dispatch(setCurrentValue(valueFromIDATA(currentValuePreview)))
+    if (useGetPreviewData) {
+      const currentValueDataCondition = currentValueDataConditionFromConfigState(configState)
+      const currentValuePreview = await dashboard.getPreviewData(currentValueDataCondition)
+      dispatch(setCurrentValue(valueFromIDATA(currentValuePreview)))
+    }
+    else {
+      const currentValue = await dashboard.getData()
+      dispatch(setCurrentValue(valueFromIDATA(currentValue)))
+    }
   }
-  else {
+  else {  // 当前值是一个固定值
     dispatch(setCurrentValue(Number(configState.currentValue)))
   }
   if (configState.targetValueType === 'useBittableData' && 'dataRange' in configState) {
-    const targetValueDataCondition = targetValueDataConditionFromConfigState(configState)
-    const targetValuePreview = await dashboard.getPreviewData(targetValueDataCondition)
-    dispatch(setTargetValue(valueFromIDATA(targetValuePreview)))
+    if (useGetPreviewData) {
+      const targetValueDataCondition = targetValueDataConditionFromConfigState(configState)
+      const targetValuePreview = await dashboard.getPreviewData(targetValueDataCondition)
+      dispatch(setTargetValue(valueFromIDATA(targetValuePreview)))
+    }
+    else {
+      const targetValue = await dashboard.getData()
+      dispatch(setTargetValue(valueFromIDATA(targetValue)))
+    }
   }
   else {
     dispatch(setTargetValue(Number(configState.targetValue)))
@@ -127,7 +145,10 @@ export const updatePreviewData = (payload:ConfigPayload):AppThunk => (async (dis
 // 保存图表配置到多维表格，在确认配置时调用
 export const saveConfig = (payload:ConfigPayload):AppThunk => (async (dispatch, getState) => {
   const configState = {...getState().config.config, ...payload}
-  const dashboardDataCondition = currentValueDataConditionFromConfigState(configState)
+  const dashboardDataCondition = configState.currentValueType === 'useBittableData' ? 
+    currentValueDataConditionFromConfigState(configState) :
+    targetValueDataConditionFromConfigState(configState)  
+    
   dashboard.saveConfig({
     dataConditions: [dashboardDataCondition],
     customConfig: {

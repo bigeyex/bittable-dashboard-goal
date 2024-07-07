@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { FieldType, IDataRange, IField, ITable, SourceType, base } from '@lark-base-open/js-sdk';
-import { Form, Button, Divider, Select, useFieldApi, useFormApi } from '@douyinfe/semi-ui';
+import { Form, Button, Divider, Select, useFieldApi, useFormApi, Banner } from '@douyinfe/semi-ui';
 import IconFormular from '/src/assets/icons/icon-formular.svg?react'
 import IconMore from '/src/assets/icons/icon-more.svg?react'
 import { DashboardState, bitable, dashboard } from "@lark-base-open/js-sdk";
@@ -229,6 +229,9 @@ export default () => {
                         >
                 </Form.Select>
             </Form.InputGroup>
+
+            <Banner fullMode={false} type="warning" closeIcon={null} description={T('usePreviewDataAlertText')}
+                    style={config.currentValueType === 'useBittableData' && config.targetValueType === 'useBittableData' ? {} : {display: 'none'}}/>
 
             <Section text={T("formatSettings")}>
                 <Form.Select field="abbrRule" label={{ text: T("unit") }} initValue="none">

@@ -21,8 +21,9 @@ export default function App() {
     if (dashboard.state === DashboardState.View || dashboard.state === DashboardState.FullScreen) {
       fetchInitData()
 
-      dashboard.onConfigChange(e => {
-        dispatch(loadConfig())
+      dashboard.onConfigChange(async (e) => {
+        const configState = await dispatch<Promise<ConfigPayload>>(loadConfig())
+        dispatch(updatePreviewData(configState))
       })
 
       setTimeout(() => {
@@ -30,8 +31,9 @@ export default function App() {
         dashboard.setRendered();
     }, 2000);
     }  
-    dashboard.onDataChange(e => {
-      dispatch(updatePreviewData(config))
+    dashboard.onDataChange(async(e) => {
+      const configState = await dispatch<Promise<ConfigPayload>>(loadConfig())
+      dispatch(updatePreviewData(configState))
     })
   }, [])
 

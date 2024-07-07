@@ -37,5 +37,9 @@
   "keepOneDigit": "Keep one decimal",
   "keepTwoDigit": "Keep two decimals",
   "abbrPerKilo": "Abbreviation per kilo",
+
+  "usePreviewDataAlertText": "Due to limitation from current Dashboard version, if Current Value and Target Value are all calculated from Bitable, only users with editing permission will be able to use and data auto-refreshing will be disabled.",
+
   "confirm": "Confirm"
+  
 }
