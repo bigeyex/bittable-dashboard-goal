@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, current, PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from './index'
 import { AppThunk } from './hook'
 import { dashboard, IDataCondition, ISeries, DashboardState, IData } from '@lark-base-open/js-sdk'
@@ -81,73 +81,71 @@ export const configSlice = createSlice({
 
 export const { setConfigState } = configSlice.actions
 
-function currentValueDataConditionFromConfigState(state:ConfigState):IDataCondition {
+function dataConditionFromConfigState(state:ConfigState):IDataCondition {
+    let series = []
+    if (state.currentValueType === 'useBittableData') {
+      series.push({
+        fieldId: state.currentValueAggField,
+        rollup: state.currentValueCalcMethod === 'count' ? 'COUNTA' : state.currentValueAggMethod
+      } as ISeries)
+    }
+    if (state.targetValueType === 'useBittableData') {
+      series.push({
+        fieldId: state.targetValueAggField,
+        rollup: state.targetValueCalcMethod === 'count' ? 'COUNTA' : state.targetValueAggMethod
+      } as ISeries)
+    }
     return {
       tableId: state.dataSource,
       dataRange: JSON.parse(state.dataRange),
-      series: state.currentValueCalcMethod === 'count' ? 'COUNTA' : [{
-        fieldId: state.currentValueAggField,
-        rollup: state.currentValueAggMethod
-      } as ISeries]
+      series: series
     }
-}
-
-function targetValueDataConditionFromConfigState(state:ConfigState):IDataCondition {
-  return {
-    tableId: state.dataSource,
-    dataRange: JSON.parse(state.dataRange),
-    series: state.targetValueCalcMethod === 'count' ? 'COUNTA' : [{
-      fieldId: state.targetValueAggField,
-      rollup: state.targetValueAggMethod
-    } as ISeries]
-  }
 }
 
 export const updatePreviewData = (payload:ConfigPayload):AppThunk => (async (dispatch, getState) => {
-  const valueFromIDATA = (data:IData) => data.length >= 2 ? data[1][0].value as number : 0
   const configState = payload as ConfigState
-  // 因为多维表格API限制，如果有两组条件，虽然可以使用getPreviewData获得数据，但只有编辑权限才能使用图表，
-  // 且监测更新会受限。所以这里做兼容，如果只有一组条件，(在非编辑情况下)就用getData()；否则使用getPreviewData
-  const useGetPreviewData = dashboard.state === DashboardState.Config || dashboard.state === DashboardState.Create ||
-      (configState.currentValueType === 'useBittableData' && configState.targetValueType === 'useBittableData');
-  console.log('use preview data: ', useGetPreviewData)
-  console.log(configState)
-  if (configState.currentValueType === 'useBittableData' && 'dataRange' in configState) {
-    if (useGetPreviewData) {
-      const currentValueDataCondition = currentValueDataConditionFromConfigState(configState)
-      const currentValuePreview = await dashboard.getPreviewData(currentValueDataCondition)
-      dispatch(setCurrentValue(valueFromIDATA(currentValuePreview)))
+
+  let idata:IData = []
+
+  
+  if ( (configState.currentValueType === 'useBittableData' || configState.targetValueType === 'useBittableData') && 'dataRange' in configState) {
+    const dataCondition = dataConditionFromConfigState(configState)
+    if (dashboard.state === DashboardState.Config || dashboard.state === DashboardState.Create) {
+      idata = await dashboard.getPreviewData(dataCondition)
     }
     else {
-      const currentValue = await dashboard.getData()
-      dispatch(setCurrentValue(valueFromIDATA(currentValue)))
-    }
+      idata = await dashboard.getData()
+    } 
   }
-  else {  // 当前值是一个固定值
-    dispatch(setCurrentValue(Number(configState.currentValue)))
-  }
-  if (configState.targetValueType === 'useBittableData' && 'dataRange' in configState) {
-    if (useGetPreviewData) {
-      const targetValueDataCondition = targetValueDataConditionFromConfigState(configState)
-      const targetValuePreview = await dashboard.getPreviewData(targetValueDataCondition)
-      dispatch(setTargetValue(valueFromIDATA(targetValuePreview)))
+  
+  console.log('preview data: ', idata) 
+  
+  let currentValue = Number(configState.currentValue) // 如不取自多维表格，直接用配置里的值
+  let targetValue = Number(configState.targetValue)
+  if (idata.length >= 2) {  // 根据当前值和目标值是否取自多维表格，api返回的idata可能有1个或2个值，这里做一个分配
+    if (idata[1].length >= 2) {
+      currentValue = idata[1][0].value as number
+      targetValue = idata[1][1].value as number
     }
     else {
-      const targetValue = await dashboard.getData()
-      dispatch(setTargetValue(valueFromIDATA(targetValue)))
+      if (configState.currentValueType === 'useBittableData') {
+        currentValue = idata[1][0].value as number
+      }
+      else {
+        targetValue = idata[1][0].value as number
+      }
     }
   }
-  else {
-    dispatch(setTargetValue(Number(configState.targetValue)))
-  }
+
+  dispatch(setCurrentValue(currentValue))
+  dispatch(setTargetValue(targetValue))
+
 })
 
 // 保存图表配置到多维表格，在确认配置时调用
 export const saveConfig = (payload:ConfigPayload):AppThunk => (async (dispatch, getState) => {
   const configState = {...getState().config.config, ...payload}
-  const dashboardDataCondition = configState.currentValueType === 'useBittableData' ? 
-    currentValueDataConditionFromConfigState(configState) :
-    targetValueDataConditionFromConfigState(configState)  
+  const dashboardDataCondition = dataConditionFromConfigState(configState)
     
   dashboard.saveConfig({
     dataConditions: [dashboardDataCondition],
