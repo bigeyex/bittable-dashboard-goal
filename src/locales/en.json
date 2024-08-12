@@ -40,6 +40,7 @@
 
   "usePreviewDataAlertText": "Due to limitation from current Dashboard version, if Current Value and Target Value are all calculated from Bitable, only users with editing permission will be able to use and data auto-refreshing will be disabled.",
 
-  "confirm": "Confirm"
+  "confirm": "Confirm",
+  "unsupport": "This type of content is not supported at the moment."
   
 }
