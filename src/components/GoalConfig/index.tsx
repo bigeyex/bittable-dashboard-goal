@@ -230,6 +230,9 @@ export default () => {
                 </Form.Select>
             </Form.InputGroup>
 
+            <Banner fullMode={false} type="warning" closeIcon={null} description={T('usePreviewDataAlertText')}
+                    style={config.currentValueType === 'useBittableData' && config.targetValueType === 'useBittableData' ? {} : {display: 'none'}}/>
+
             <Section text={T("formatSettings")}>
                 <Form.Select field="abbrRule" label={{ text: T("unit") }} initValue="none">
                     {Object.entries(getLocalUnitAbbrRule()).map(([key, value]) => {
