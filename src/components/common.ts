@@ -6,6 +6,16 @@ export const isConfigLayout = () => {
     return dashboard.state === DashboardState.Config || dashboard.state === DashboardState.Create
 }
 
+// 多维表格限制，多个查询条件，且包含count的时候不能使用getData()
+export const isGetDataLimited = (config:ConfigState) => {
+  if (config.currentValueType === 'useBittableData' && config.targetValueType === 'useBittableData') {
+    if (config.targetValueCalcMethod === 'count' || config.currentValueCalcMethod === 'count') {
+      return true
+    }
+  }
+  return false
+}
+
 export const themeColors = [
     'rgba(31, 35, 41, 1)', 'rgba(51, 109, 244, 1)', 'rgba(122, 53, 240, 1)',
     'rgba(53, 189, 75, 1)', 'rgba(45, 190, 171, 1)', 'rgba(255, 198, 10, 1)',
@@ -91,6 +101,7 @@ export const getLongTextClass = (currentValueText:string, targetValueText:string
 
 import { useLayoutEffect } from "react";
 import i18n, { T } from "../locales/i18n";
+import { ConfigState } from "../store/config";
 
 function updateTheme(theme: string) {
   document.body.setAttribute('theme-mode', theme);
