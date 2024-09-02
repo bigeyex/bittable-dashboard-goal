@@ -38,7 +38,7 @@
   "keepTwoDigit": "Keep two decimals",
   "abbrPerKilo": "Abbreviation per kilo",
 
-  "usePreviewDataAlertText": "Due to limitation from current Dashboard version, if Current Value and Target Value are all calculated from Bitable, only users with editing permission will be able to use and data auto-refreshing will be disabled.",
+  "usePreviewDataAlertText": "Due to Dashboard limitation, if Current Value and Target Value are all calculated from Bitable, \"Count of records\" is not usable. Try calculate sum from a field of constant 1",
 
   "confirm": "Confirm"
   
