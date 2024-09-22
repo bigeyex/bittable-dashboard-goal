@@ -16,6 +16,7 @@ export const isGetDataLimited = (config:ConfigState) => {
   return false
 }
 
+// 这是最初版本的需求制定的主题颜色列表，一般只作为key和兜底。因为向前兼容所以没有替换掉
 export const themeColors = [
     'rgba(31, 35, 41, 1)', 'rgba(51, 109, 244, 1)', 'rgba(122, 53, 240, 1)',
     'rgba(53, 189, 75, 1)', 'rgba(45, 190, 171, 1)', 'rgba(255, 198, 10, 1)',
@@ -67,25 +68,17 @@ export const getLocalUnitAbbrNumber = (number: number, abbrRule:string) => {
   return (number / rule.size) + rule.suffix
 }
 
-export const darkModeThemeColor = (color: string) => {
-  const lookup:{[key:string]: string} = {
-    'rgba(31, 35, 41, 1)': '#EBEBEB',
-    'rgba(51, 109, 244, 1)': 'rgba(76, 136, 255, 1)',
-    'rgba(122, 53, 240, 1)': 'rgba(184, 143, 254, 1)',
-    'rgba(53, 189, 75, 1)': 'rgba(81, 186, 67, 1)',
-    'rgba(45, 190, 171, 1)': 'rgba(23, 207, 181, 1)',
-    'rgba(255, 198, 10, 1)': 'rgba(251, 203, 70, 1)',
-    'rgba(255, 129, 26, 1)': 'rgba(248, 158, 68, 1)',
-    'rgba(245, 74, 69, 1)': 'rgba(240, 91, 86, 1)',
-  }
-  if (!isDarkMode) return color
-  if (color in lookup) {
-    return lookup[color]
-  }
-  else {
-    return color
-  }
+export const themeKeyLookup:{[key:string]: number} = {
+  'rgba(31, 35, 41, 1)': 0,
+  'rgba(51, 109, 244, 1)': 1,
+  'rgba(122, 53, 240, 1)': 2,
+  'rgba(53, 189, 75, 1)': 3,
+  'rgba(45, 190, 171, 1)': 4,
+  'rgba(255, 198, 10, 1)': 5,
+  'rgba(255, 129, 26, 1)': 6,
+  'rgba(245, 74, 69, 1)': 7,
 }
+
 
 export const getLongTextClass = (currentValueText:string, targetValueText:string, percentageText:string, firstThreshold=18, secondThreshold=28) => {
   const fullTextLength = currentValueText.length + targetValueText.length + `${percentageText}%`.length
@@ -103,28 +96,9 @@ import { useLayoutEffect } from "react";
 import i18n, { T } from "../locales/i18n";
 import { ConfigState } from "../store/config";
 
-function updateTheme(theme: string) {
-  document.body.setAttribute('theme-mode', theme);
-}
-
-/** following dark mode theme */
-export function useTheme() {
-  useLayoutEffect(() => {
-    bitable.bridge.getTheme().then((theme: string) => {
-      updateTheme(theme.toLocaleLowerCase())
-      isDarkMode = theme.toLocaleLowerCase() === 'dark'
-    })
-
-    bitable.bridge.onThemeChange((e) => {
-      updateTheme(e.data.theme.toLocaleLowerCase())
-      isDarkMode = e.data.theme.toLocaleLowerCase() === 'dark'
-    })
-  }, [])
-}
-
 export function onDrakModeChange(callback:() => void) {
   useLayoutEffect(() => {
-    bitable.bridge.onThemeChange((e) => {
+    dashboard.onThemeChange((res) => {
       callback()
     })
   }, [])

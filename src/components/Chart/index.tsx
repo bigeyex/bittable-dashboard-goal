@@ -1,5 +1,8 @@
 import { useAppSelector } from "../../store/hook"
-import { darkModeThemeColor, getLocalUnitAbbrRule } from "../common";
+import React, { useCallback, useEffect, useState } from 'react';
+import { DashboardState, IDashboardTheme, ThemeModeType, bitable, dashboard } from "@lark-base-open/js-sdk";
+
+import { getLocalUnitAbbrRule, themeColors, themeKeyLookup } from "../common";
 import Bar from './bar'
 import Circular from "./circular";
 import SemiCircular from './semiCircular'
@@ -10,12 +13,29 @@ export interface GoalChartProps {
     color: string;
     percentage: number;
     percentageText: string;
+    isDarkMode: boolean;
+    chartBgColor: string;
 }
 
 export default () => {
     const currentValue = useAppSelector(store => store.chartData.currentValue)
     const targetValue = useAppSelector(store => store.chartData.targetValue)
     const config = useAppSelector(store => store.config.config)
+
+    // dashboard theme system section
+    const [themeConfig, setThemeConfig] = useState<IDashboardTheme>();
+    const getThemeConfig = async () => {
+        const theme = await dashboard.getTheme();
+        setThemeConfig(theme);
+    }
+    useEffect(() => {
+        getThemeConfig()
+    }, [])
+    dashboard.onThemeChange(res => {
+        setThemeConfig(res.data);
+    });
+    const themedColor = themeConfig ? themeConfig.labelColorTokenList[themeKeyLookup[config.color]] : config.color;
+    const chartBgColor = themeConfig ? themeConfig.chartBgColor : 'transparent';
     
     const formatNumber = (number:number) => {
         const abbrRuleSet = getLocalUnitAbbrRule()
@@ -39,9 +59,11 @@ export default () => {
     const props:GoalChartProps = {
         currentValueText: formatNumber(currentValue),
         targetValueText: formatNumber(targetValue),
-        color: darkModeThemeColor(config.color),
+        color: themedColor,
+        isDarkMode: themeConfig?.theme == ThemeModeType.DARK,
         percentage: percentage,
-        percentageText: percentageText
+        percentageText: percentageText,
+        chartBgColor: chartBgColor,
     }
 
     if (config.chartType === 'semiCircular') {

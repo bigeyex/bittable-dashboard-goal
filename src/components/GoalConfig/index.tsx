@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { FieldType, IDataRange, IField, ITable, SourceType, base } from '@lark-base-open/js-sdk';
+import { FieldType, IDashboardTheme, IDataRange, IField, ITable, SourceType, base } from '@lark-base-open/js-sdk';
 import { Form, Button, Divider, Select, useFieldApi, useFormApi, Banner } from '@douyinfe/semi-ui';
 import IconFormular from '/src/assets/icons/icon-formular.svg?react'
 import IconMore from '/src/assets/icons/icon-more.svg?react'
@@ -8,7 +8,7 @@ import { DashboardState, bitable, dashboard } from "@lark-base-open/js-sdk";
 import './style.scss'
 import config, { ConfigPayload, ConfigState, loadConfig, saveConfig, setConfigState, updatePreviewData } from '../../store/config';
 import { useAppDispatch, useAppSelector } from '../../store/hook';
-import { darkModeThemeColor, getLocalUnitAbbrRule, isGetDataLimited, themeColors } from '../common';
+import { getLocalUnitAbbrRule, isGetDataLimited, themeColors, themeKeyLookup } from '../common';
 import { T } from '../../locales/i18n';
 import Section from '@douyinfe/semi-ui/lib/es/form/section';
 
@@ -20,7 +20,18 @@ export default () => {
     const dispatch = useAppDispatch()
     const [numberFieldList, setNumberFieldList] = useState<NumberFieldInfo[]>([])
     const config = useAppSelector(store => store.config.config)
-    
+
+    // dashboard theme system section
+    const [themeConfig, setThemeConfig] = useState<IDashboardTheme>();
+    const getThemeConfig = async () => {
+        const theme = await dashboard.getTheme();
+        setThemeConfig(theme);
+    }
+    useEffect(() => {
+        getThemeConfig()
+    }, [])
+
+        
     // because Form in semi-design requires formApi, and it has to be
     // within the Form's context, so an additional component (DefaultValueSetter) is created to 
     // keep formApi instances
@@ -160,8 +171,9 @@ export default () => {
             <Form.RadioGroup field="color" label={T("color")} initValue='rgba(53, 189, 75, 1)' type='pureCard' direction='horizontal' className='colorPicker'> 
                 {
                     themeColors.map((color) => {
-                        return <Form.Radio key={color} value={color} style={{borderColor: darkModeThemeColor(color)}}>
-                            <div className='swatch' style={{backgroundColor: darkModeThemeColor(color)}}></div>
+                        const themedColor = themeConfig ? themeConfig.labelColorTokenList[themeKeyLookup[color]] : color;
+                        return <Form.Radio key={color} value={color} style={{borderColor: themedColor}}>
+                            <div className='swatch' style={{backgroundColor: themedColor}}></div>
                         </Form.Radio>
                     })
                 }
