@@ -5,11 +5,11 @@ import { useResizeDetector } from 'react-resize-detector';
 import './semiCircular.scss'
 import { createRef, useEffect, useRef } from "react";
 import ReactECharts from 'echarts-for-react';
-import { getLongTextClass, isConfigLayout, onDrakModeChange } from "../common";
+import { getLongTextClass, isConfigLayout } from "../common";
 import { dashboard } from "@lark-base-open/js-sdk";
 
 
-export default ({currentValueText, targetValueText, color, percentage, percentageText}:GoalChartProps) => {
+export default ({currentValueText, targetValueText, color, percentage, percentageText, isDarkMode, chartBgColor}:GoalChartProps) => {
     const chartRef = createRef<ReactECharts>()
 
     const { width, height, ref } = useResizeDetector({
@@ -24,7 +24,8 @@ export default ({currentValueText, targetValueText, color, percentage, percentag
         chartRef.current?.getEchartsInstance().resize()
     }, [])
 
-    return <div className={'goalchartSemiCircularContainer' + (isConfigLayout() ? ' config' : '')}>
+    return <div className={'goalchartSemiCircularContainer' + (isConfigLayout() ? ' config' : '')} 
+                style={{ background: chartBgColor }}>
         <div className="semiCircle">
             <div className="textRegion">
                 <div className="percentage">{percentageText}%</div>
@@ -37,7 +38,7 @@ export default ({currentValueText, targetValueText, color, percentage, percentag
                 </div>
             </div>
             <div ref={ref} className="chartRegion">
-                <SemiCircularPart ref={chartRef} className="circularPart" color={color} percentage={percentage < 9 && percentage > 0 ? 9 : percentage}/>
+                <SemiCircularPart ref={chartRef} className="circularPart" color={color} isDarkMode={isDarkMode} percentage={percentage < 9 && percentage > 0 ? 9 : percentage}/>
             </div>
         </div>
     </div>

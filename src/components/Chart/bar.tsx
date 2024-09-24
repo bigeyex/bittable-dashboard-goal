@@ -2,8 +2,9 @@ import { GoalChartProps } from "."
 import { getLongTextClass, isConfigLayout } from "../common"
 import './bar.scss'
 
-export default ({currentValueText, targetValueText, color, percentage, percentageText}:GoalChartProps) => {
-    return <div className={'goalchartBarContainer' + (isConfigLayout() ? ' config' : '')}>
+export default ({currentValueText, targetValueText, color, chartBgColor, percentage, percentageText}:GoalChartProps) => {
+    return <div className={'goalchartBarContainer' + (isConfigLayout() ? ' config' : '')} 
+                style={{ background: chartBgColor }}>
         <div className="goalchartBar">
             <div className={"textRegion" + getLongTextClass(currentValueText, targetValueText, percentageText)}>
                 <div className="currentValue" style={{color: `${color}`}}>{currentValueText}</div>

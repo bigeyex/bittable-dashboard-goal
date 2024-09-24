@@ -40,10 +40,10 @@ type ECOption = ComposeOption<
 import ReactECharts from 'echarts-for-react';
 import { UseResizeDetectorReturn, useResizeDetector } from 'react-resize-detector';
 import React, { forwardRef, useCallback, useReducer, useRef } from 'react';
-import { isDarkMode, onDrakModeChange } from '../common';
+import { onDrakModeChange } from '../common';
 
 
-const greyColor = () => isDarkMode ? "rgba(235, 235, 235, 0.1)" : "rgba(231, 233, 239, 1)"
+const greyColor = (isDarkMode:boolean) => isDarkMode ? "rgba(235, 235, 235, 0.1)" : "rgba(231, 233, 239, 1)"
 const makeCircularSeriesConfig = (color:string, startAngle:number, endAngle:number, borderRadius='100%') => ({
     color: [
         color,
@@ -68,25 +68,25 @@ const makeCircularSeriesConfig = (color:string, startAngle:number, endAngle:numb
     ]
 })
 
-type CircularPartProps = {color:string, percentage:number, className?:string}
-export const SemiCircularPart = forwardRef<ReactECharts, CircularPartProps>(({color, percentage, className}, ref) => {
+type CircularPartProps = {color:string, percentage:number, isDarkMode:boolean, className?:string}
+export const SemiCircularPart = forwardRef<ReactECharts, CircularPartProps>(({color, percentage, isDarkMode, className}, ref) => {
   const [, forceUpdate] = useReducer(x => x + 1, 0);
   onDrakModeChange(() => { forceUpdate() })
   const option = {
       series: [
-        makeCircularSeriesConfig(greyColor(), 180, 0),
+        makeCircularSeriesConfig(greyColor(isDarkMode), 180, 0),
         makeCircularSeriesConfig(color, 180, Math.round(180-180*percentage/100)),
       ], 
   }
   return <ReactECharts ref={ref} option={option} className={className} opts={{renderer: 'svg'}}/>
 })
 
-export const CircularPart = forwardRef<ReactECharts, CircularPartProps>(({color, percentage, className}, ref) => {
+export const CircularPart = forwardRef<ReactECharts, CircularPartProps>(({color, percentage, isDarkMode, className}, ref) => {
   const [, forceUpdate] = useReducer(x => x + 1, 0);
   onDrakModeChange(() => { forceUpdate() })  
   const option = {
       series: [
-          makeCircularSeriesConfig(greyColor(), 180, -180),
+          makeCircularSeriesConfig(greyColor(isDarkMode), 180, -180),
           makeCircularSeriesConfig(color, 180, Math.round(180-360*percentage/100)),
         ]
   }

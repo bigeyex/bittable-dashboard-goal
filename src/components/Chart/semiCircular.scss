@@ -9,7 +9,7 @@
 
 @mixin semiCircleMixin($pvw: 1) {
     .semiCircle {
-        width: 130vw * $pvw;
+        width: min(130vw * $pvw, 260vh * $pvw);
         position: relative;
 
         .chartRegion {
@@ -28,30 +28,30 @@
         .textRegion {
             display: flex;
             flex-direction: column;
-            margin-top: 26vw * $pvw;
+            margin-top: min(26vw * $pvw, 52vh * $pvw);
             align-items: center;
 
             .percentage {
-                font-size: 18vw * $pvw;
+                font-size: min(18vw * $pvw, 36vh * $pvw);
                 font-weight: 900;
             }
 
             .detailNumbers {
                 display: flex;
                 flex-direction: row;
-                font-size: 10vw * $pvw;
+                font-size: min(10vw * $pvw, 20vh * $pvw);
                 &.longText {
-                    font-size: 10vw * $pvw * 0.7;
-                    margin-top: 6vw * $pvw;
+                    font-size: min(7vw * $pvw, 14vh * $pvw);
+                    margin-top: min(6vw * $pvw, 12vh * $pvw);
                 }
                 &.longLongText {
-                    font-size: 10vw * $pvw * 0.55;
+                    font-size: min(5.5vw * $pvw, 11vh * $pvw);
                 }
                 font-weight: 600;
-                margin-top: 3vw * $pvw;
+                margin-top: min(3vw * $pvw, 6vh * $pvw);
 
                 .seperatorContainer {
-                    width: 10vw * $pvw;
+                    width: min(10vw * $pvw, 20vh * $pvw);
                     display: flex;
                     justify-content: center;
 
