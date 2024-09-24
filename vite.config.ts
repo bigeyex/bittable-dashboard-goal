@@ -16,4 +16,9 @@ export default defineConfig({
       '/api': 'https://api.apiusb.com/api/app?service=App.NumbersFormula.RandomNumberGenerator&num=8&min=7&max=15'
     }
   },
+  build: {
+    rollupOptions: {
+      external: ['#minpath', '#minproc', '#minurl']
+    }
+  }
 })
