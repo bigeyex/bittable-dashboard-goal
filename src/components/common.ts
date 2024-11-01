@@ -6,16 +6,6 @@ export const isConfigLayout = () => {
     return dashboard.state === DashboardState.Config || dashboard.state === DashboardState.Create
 }
 
-// 多维表格限制，多个查询条件，且包含count的时候不能使用getData()
-export const isGetDataLimited = (config:ConfigState) => {
-  if (config.currentValueType === 'useBittableData' && config.targetValueType === 'useBittableData') {
-    if (config.targetValueCalcMethod === 'count' || config.currentValueCalcMethod === 'count') {
-      return true
-    }
-  }
-  return false
-}
-
 // 这是最初版本的需求制定的主题颜色列表，一般只作为key和兜底。因为向前兼容所以没有替换掉
 export const themeColors = [
     'rgba(31, 35, 41, 1)', 'rgba(51, 109, 244, 1)', 'rgba(122, 53, 240, 1)',

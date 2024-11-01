@@ -8,7 +8,7 @@ import { DashboardState, bitable, dashboard } from "@lark-base-open/js-sdk";
 import './style.scss'
 import config, { ConfigPayload, ConfigState, loadConfig, saveConfig, setConfigState, updatePreviewData } from '../../store/config';
 import { useAppDispatch, useAppSelector } from '../../store/hook';
-import { getLocalUnitAbbrRule, isGetDataLimited, themeColors, themeKeyLookup } from '../common';
+import { getLocalUnitAbbrRule, themeColors, themeKeyLookup } from '../common';
 import { T } from '../../locales/i18n';
 import Section from '@douyinfe/semi-ui/lib/es/form/section';
 
@@ -243,7 +243,7 @@ export default () => {
             </Form.InputGroup>
 
             <Banner fullMode={false} type="warning" closeIcon={null} description={T('usePreviewDataAlertText')}
-                    style={isGetDataLimited(config) ? {} : {display: 'none'}}/>
+                    style={config.currentValueType === 'useBittableData' && config.targetValueType === 'useBittableData' ? {} : {display: 'none'}}/>
 
             <Section text={T("formatSettings")}>
                 <Form.Select field="abbrRule" label={{ text: T("unit") }} initValue="none">
